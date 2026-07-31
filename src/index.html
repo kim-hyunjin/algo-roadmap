@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="대표 코딩 테스트 유형의 판별법, 풀이 패턴, 코드 템플릿과 연습 문제를 한곳에서 학습하세요."
+    />
+    <title>Algo Roadmap — 코딩 테스트 유형 가이드</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#topics">학습 목록으로 건너뛰기</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Algo Roadmap 홈">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>Algo Roadmap</span>
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a href="#topics">유형 학습</a>
+        <a href="#study-route">추천 순서</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">코딩 테스트를 위한 작은 지도</p>
+          <h1>문제를 읽고,<br /><em>풀이 패턴</em>을 떠올리는 힘</h1>
+          <p class="hero-description">
+            대표 알고리즘 10가지를 신호 → 접근법 → 템플릿 → 연습 문제의
+            순서로 익혀보세요. 막연히 문제 수를 늘리는 대신, 왜 이 풀이를
+            선택하는지 배우는 정적 학습 가이드입니다.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#topics">첫 유형 시작하기</a>
+            <a class="button secondary" href="#study-route">추천 순서 보기</a>
+          </div>
+        </div>
+
+        <aside class="progress-card" aria-labelledby="progress-title">
+          <div class="progress-top">
+            <span id="progress-title">나의 학습 진도</span>
+            <strong id="progress-count">0 / 10</strong>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="10"
+            aria-valuenow="0"
+            aria-label="완료한 유형"
+          >
+            <span id="progress-bar"></span>
+          </div>
+          <p id="progress-message">가장 익숙한 유형부터 하나씩 시작해보세요.</p>
+          <button id="reset-progress" class="text-button" type="button">
+            진도 초기화
+          </button>
+        </aside>
+      </section>
+
+      <section class="principles" aria-label="학습 원칙">
+        <article>
+          <span>01</span>
+          <h2>신호를 찾기</h2>
+          <p>입력 크기와 문제 표현에서 사용할 수 있는 알고리즘을 좁힙니다.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>말로 먼저 풀기</h2>
+          <p>코드를 쓰기 전, 상태와 반복 규칙을 한 문장으로 설명합니다.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>복잡도 확인</h2>
+          <p>정답 코드를 외우기보다 제한 안에 동작하는 이유를 확인합니다.</p>
+        </article>
+      </section>
+
+      <section id="topics" class="topics-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Pattern library</p>
+            <h2>대표 문제 유형</h2>
+          </div>
+          <p>카드를 열어 핵심 해법과 연습 문제를 확인하세요.</p>
+        </div>
+
+        <div class="tools" role="search">
+          <label class="search-box">
+            <span class="visually-hidden">유형 검색</span>
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="예: 그래프, 최단 거리, 연속 구간"
+              autocomplete="off"
+            />
+          </label>
+          <div class="filters" aria-label="난이도 필터">
+            <button class="filter active" type="button" data-level="all">전체</button>
+            <button class="filter" type="button" data-level="basic">기초</button>
+            <button class="filter" type="button" data-level="intermediate">중급</button>
+          </div>
+        </div>
+
+        <p id="result-summary" class="result-summary" aria-live="polite"></p>
+        <div id="topic-grid" class="topic-grid"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <strong>찾는 유형이 없습니다.</strong>
+          <p>검색어를 줄이거나 난이도 필터를 바꿔보세요.</p>
+        </div>
+      </section>
+
+      <section id="study-route" class="route-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">4-week route</p>
+            <h2>처음이라면 이 순서로</h2>
+          </div>
+          <p>주 5일, 하루 60~90분을 기준으로 한 가벼운 학습 경로입니다.</p>
+        </div>
+
+        <ol class="route-list">
+          <li>
+            <span class="week">1주차</span>
+            <div>
+              <h3>기본 도구 익히기</h3>
+              <p>배열·해시 → 스택·큐 → 완전 탐색</p>
+            </div>
+          </li>
+          <li>
+            <span class="week">2주차</span>
+            <div>
+              <h3>탐색 범위 줄이기</h3>
+              <p>정렬·그리디 → 이분 탐색 → 투 포인터</p>
+            </div>
+          </li>
+          <li>
+            <span class="week">3주차</span>
+            <div>
+              <h3>상태와 관계 탐색하기</h3>
+              <p>DFS·BFS → 동적 계획법</p>
+            </div>
+          </li>
+          <li>
+            <span class="week">4주차</span>
+            <div>
+              <h3>그래프 문제 확장하기</h3>
+              <p>최단 경로 → 유니온 파인드·MST → 약점 복습</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <p>정답을 외우는 대신, 선택의 근거를 익히세요.</p>
+      <a href="#topics">위로 돌아가기 ↑</a>
+    </footer>
+
+    <template id="topic-template">
+      <article class="topic-card">
+        <div class="topic-card-header">
+          <div>
+            <span class="topic-number"></span>
+            <span class="level-badge"></span>
+          </div>
+          <label class="complete-toggle">
+            <input type="checkbox" />
+            <span>학습 완료</span>
+          </label>
+        </div>
+        <h3></h3>
+        <p class="topic-summary"></p>
+        <div class="topic-tags"></div>
+        <button class="open-topic" type="button" aria-expanded="false">
+          <span>핵심 해법 보기</span>
+          <span aria-hidden="true">＋</span>
+        </button>
+        <div class="topic-detail" hidden></div>
+      </article>
+    </template>
+  </body>
+</html>
