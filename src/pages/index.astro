@@ -1,3 +1,9 @@
+---
+import TopicCard from "../components/TopicCard.astro";
+import { topics } from "../data/topics";
+import "../styles.css";
+---
+
 <!doctype html>
 <html lang="ko">
   <head>
@@ -8,8 +14,6 @@
       content="대표 코딩 테스트 유형의 판별법, 풀이 패턴, 코드 템플릿과 연습 문제를 한곳에서 학습하세요."
     />
     <title>Algo Roadmap — 코딩 테스트 유형 가이드</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <script src="./app.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#topics">학습 목록으로 건너뛰기</a>
@@ -31,9 +35,9 @@
           <p class="eyebrow">코딩 테스트를 위한 작은 지도</p>
           <h1>문제를 읽고,<br /><em>풀이 패턴</em>을 떠올리는 힘</h1>
           <p class="hero-description">
-            대표 알고리즘 10가지를 신호 → 접근법 → 템플릿 → 연습 문제의
+            대표 알고리즘 10가지를 신호 → 대표 문제 → 단계별 실행 → 연습 문제의
             순서로 익혀보세요. 막연히 문제 수를 늘리는 대신, 왜 이 풀이를
-            선택하는지 배우는 정적 학습 가이드입니다.
+            선택하고 상태가 어떻게 변하는지 배우는 정적 학습 가이드입니다.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#topics">첫 유형 시작하기</a>
@@ -44,13 +48,13 @@
         <aside class="progress-card" aria-labelledby="progress-title">
           <div class="progress-top">
             <span id="progress-title">나의 학습 진도</span>
-            <strong id="progress-count">0 / 10</strong>
+            <strong id="progress-count">0 / {topics.length}</strong>
           </div>
           <div
             class="progress-track"
             role="progressbar"
             aria-valuemin="0"
-            aria-valuemax="10"
+            aria-valuemax={topics.length}
             aria-valuenow="0"
             aria-label="완료한 유형"
           >
@@ -87,7 +91,7 @@
             <p class="eyebrow">Pattern library</p>
             <h2>대표 문제 유형</h2>
           </div>
-          <p>카드를 열어 핵심 해법과 연습 문제를 확인하세요.</p>
+          <p>카드를 열어 대표 문제의 상세 풀이와 실행 과정을 따라가 보세요.</p>
         </div>
 
         <div class="tools" role="search">
@@ -109,7 +113,9 @@
         </div>
 
         <p id="result-summary" class="result-summary" aria-live="polite"></p>
-        <div id="topic-grid" class="topic-grid"></div>
+        <div id="topic-grid" class="topic-grid">
+          {topics.map((topic, index) => <TopicCard {topic} {index} />)}
+        </div>
         <div id="empty-state" class="empty-state" hidden>
           <strong>찾는 유형이 없습니다.</strong>
           <p>검색어를 줄이거나 난이도 필터를 바꿔보세요.</p>
@@ -163,27 +169,6 @@
       <a href="#topics">위로 돌아가기 ↑</a>
     </footer>
 
-    <template id="topic-template">
-      <article class="topic-card">
-        <div class="topic-card-header">
-          <div>
-            <span class="topic-number"></span>
-            <span class="level-badge"></span>
-          </div>
-          <label class="complete-toggle">
-            <input type="checkbox" />
-            <span>학습 완료</span>
-          </label>
-        </div>
-        <h3></h3>
-        <p class="topic-summary"></p>
-        <div class="topic-tags"></div>
-        <button class="open-topic" type="button" aria-expanded="false">
-          <span>핵심 해법 보기</span>
-          <span aria-hidden="true">＋</span>
-        </button>
-        <div class="topic-detail" hidden></div>
-      </article>
-    </template>
+    <script src="../scripts/app.ts"></script>
   </body>
 </html>

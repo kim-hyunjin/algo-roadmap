@@ -1,0 +1,105 @@
+---
+import type { RepresentativeExample, VisualCell } from "../data/examples";
+
+interface Props {
+  example: RepresentativeExample;
+}
+
+const { example } = Astro.props;
+const getValue = (cell: VisualCell) => (typeof cell === "string" ? cell : cell.value);
+const getState = (cell: VisualCell) =>
+  typeof cell === "string" ? "normal" : (cell.state ?? "normal");
+---
+
+<section class="example-walkthrough" aria-label={`${example.title} 대표 문제 풀이`}>
+  <div class="example-heading">
+    <span>대표 문제</span>
+    <h4>{example.title}</h4>
+    <p>{example.prompt}</p>
+  </div>
+
+  <dl class="example-io">
+    <div>
+      <dt>입력</dt>
+      <dd><code>{example.input}</code></dd>
+    </div>
+    <div>
+      <dt>출력</dt>
+      <dd><code>{example.output}</code></dd>
+    </div>
+  </dl>
+
+  <div class="example-key-idea">
+    <h5>핵심 생각</h5>
+    <p>{example.keyIdea}</p>
+  </div>
+
+  <ol class="reasoning-list">
+    {example.reasoning.map((step) => (
+      <li>
+        <strong>{step.title}</strong>
+        <p>{step.description}</p>
+      </li>
+    ))}
+  </ol>
+
+  <div class="algorithm-visual" data-walkthrough>
+    <div class="visual-heading">
+      <div>
+        <h5>알고리즘 실행 과정</h5>
+        <span aria-live="polite">
+          <b data-step-current>1</b> / <span data-step-total>{example.frames.length}</span>
+        </span>
+      </div>
+      <div class="visual-controls">
+        <button type="button" data-step-previous disabled>이전</button>
+        <button type="button" data-step-next>다음</button>
+      </div>
+    </div>
+
+    <div class="visual-frames" role="group" aria-label={example.visualizationLabel}>
+      {example.frames.map((frame, frameIndex) => (
+        <section class="visual-frame" data-visual-frame hidden={frameIndex !== 0}>
+          <div class="visual-copy">
+            <strong>{frame.title}</strong>
+            <p>{frame.description}</p>
+          </div>
+          <div class="visual-board" role="img" aria-label={`${frame.title}. ${frame.description}`}>
+            {frame.rows.map((row) => (
+              <div class="visual-row">
+                <span class="visual-row-label">{row.label}</span>
+                <div class="visual-cells">
+                  {row.cells.map((cell) => (
+                    <span class="visual-cell" data-state={getState(cell)}>{getValue(cell)}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <div class="detail-block example-code" data-code-tabs>
+    <h5>이 문제의 전체 코드</h5>
+    <div class="code-tabs" role="tablist" aria-label={`${example.title} 풀이 언어`}>
+      <button
+        class="code-tab active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        data-language="python"
+      >Python</button>
+      <button
+        class="code-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        data-language="javascript"
+      >JavaScript</button>
+    </div>
+    <pre data-code-language="python"><code>{example.python}</code></pre>
+    <pre data-code-language="javascript" hidden><code>{example.javascript}</code></pre>
+  </div>
+</section>

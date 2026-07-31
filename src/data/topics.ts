@@ -1,4 +1,29 @@
-const topics = [
+export type TopicLevel = "basic" | "intermediate";
+
+export type ProblemDifficulty = "Easy" | "Medium" | "Hard";
+
+export type PracticeProblem = readonly [
+  name: string,
+  difficulty: ProblemDifficulty,
+  url: string,
+];
+
+export interface Topic {
+  id: string;
+  title: string;
+  level: TopicLevel;
+  summary: string;
+  tags: string[];
+  signals: string[];
+  steps: string[];
+  complexity: string;
+  mistake: string;
+  python: string;
+  javascript: string;
+  problems: PracticeProblem[];
+}
+
+export const topics = [
   {
     id: "array-hash",
     title: "배열 · 해시",
@@ -313,194 +338,4 @@ function union(a, b) {
       ["LeetCode — Min Cost to Connect All Points", "Medium", "https://leetcode.com/problems/min-cost-to-connect-all-points/"],
     ],
   },
-];
-
-const storageKey = "algo-roadmap-completed";
-const grid = document.querySelector("#topic-grid");
-const template = document.querySelector("#topic-template");
-const searchInput = document.querySelector("#search-input");
-const filters = [...document.querySelectorAll(".filter")];
-const resultSummary = document.querySelector("#result-summary");
-const emptyState = document.querySelector("#empty-state");
-const progressCount = document.querySelector("#progress-count");
-const progressBar = document.querySelector("#progress-bar");
-const progressTrack = document.querySelector(".progress-track");
-const progressMessage = document.querySelector("#progress-message");
-const resetButton = document.querySelector("#reset-progress");
-
-let activeLevel = "all";
-let completed = readCompleted();
-
-function readCompleted() {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(storageKey) ?? "[]"));
-  } catch {
-    return new Set();
-  }
-}
-
-function saveCompleted() {
-  localStorage.setItem(storageKey, JSON.stringify([...completed]));
-}
-
-function escapeHtml(value) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-}
-
-function createDetail(topic) {
-  const problemItems = topic.problems
-    .map(
-      ([name, level, url]) => `
-        <li>
-          <a href="${url}" target="_blank" rel="noopener noreferrer">
-            <span>${name}</span><small>${level} ↗</small>
-          </a>
-        </li>`,
-    )
-    .join("");
-
-  return `
-    <div class="detail-block">
-      <h4>이 신호를 찾으세요</h4>
-      <ul>${topic.signals.map((item) => `<li>${item}</li>`).join("")}</ul>
-    </div>
-    <div class="detail-block">
-      <h4>풀이 순서</h4>
-      <ol>${topic.steps.map((item) => `<li>${item}</li>`).join("")}</ol>
-    </div>
-    <div class="detail-block">
-      <h4>복잡도</h4>
-      <span class="complexity">${topic.complexity}</span>
-    </div>
-    <div class="detail-block">
-      <h4>자주 하는 실수</h4>
-      <p>${topic.mistake}</p>
-    </div>
-    <div class="detail-block">
-      <h4>기본 템플릿</h4>
-      <div class="code-tabs">
-        <button class="code-tab active" type="button" data-language="python">Python</button>
-        <button class="code-tab" type="button" data-language="javascript">JavaScript</button>
-      </div>
-      <pre><code>${escapeHtml(topic.python)}</code></pre>
-    </div>
-    <div class="detail-block">
-      <h4>연습 문제</h4>
-      <ul class="problem-list">${problemItems}</ul>
-    </div>`;
-}
-
-function render() {
-  const query = searchInput.value.trim().toLocaleLowerCase("ko");
-  const visible = topics.filter((topic) => {
-    const matchesLevel = activeLevel === "all" || topic.level === activeLevel;
-    const haystack = [topic.title, topic.summary, ...topic.tags, ...topic.signals]
-      .join(" ")
-      .toLocaleLowerCase("ko");
-    return matchesLevel && haystack.includes(query);
-  });
-
-  grid.replaceChildren();
-
-  visible.forEach((topic) => {
-    const fragment = template.content.cloneNode(true);
-    const card = fragment.querySelector(".topic-card");
-    const checkbox = fragment.querySelector('input[type="checkbox"]');
-    const openButton = fragment.querySelector(".open-topic");
-    const detail = fragment.querySelector(".topic-detail");
-    const icon = openButton.lastElementChild;
-
-    card.dataset.id = topic.id;
-    card.classList.toggle("completed", completed.has(topic.id));
-    fragment.querySelector(".topic-number").textContent = String(
-      topics.indexOf(topic) + 1,
-    ).padStart(2, "0");
-    fragment.querySelector(".level-badge").textContent =
-      topic.level === "basic" ? "기초" : "중급";
-    fragment.querySelector("h3").textContent = topic.title;
-    fragment.querySelector(".topic-summary").textContent = topic.summary;
-    fragment.querySelector(".topic-tags").innerHTML = topic.tags
-      .map((tag) => `<span>${tag}</span>`)
-      .join("");
-    detail.innerHTML = createDetail(topic);
-    checkbox.checked = completed.has(topic.id);
-    checkbox.setAttribute("aria-label", `${topic.title} 학습 완료`);
-
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) completed.add(topic.id);
-      else completed.delete(topic.id);
-      card.classList.toggle("completed", checkbox.checked);
-      saveCompleted();
-      updateProgress();
-    });
-
-    openButton.addEventListener("click", () => {
-      const isOpen = openButton.getAttribute("aria-expanded") === "true";
-      openButton.setAttribute("aria-expanded", String(!isOpen));
-      openButton.firstElementChild.textContent = isOpen ? "핵심 해법 보기" : "해법 접기";
-      icon.textContent = isOpen ? "＋" : "−";
-      detail.hidden = isOpen;
-    });
-
-    detail.querySelectorAll(".code-tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        detail.querySelectorAll(".code-tab").forEach((item) => {
-          item.classList.toggle("active", item === tab);
-        });
-        const code = topic[tab.dataset.language];
-        detail.querySelector("code").textContent = code;
-      });
-    });
-
-    grid.append(fragment);
-  });
-
-  resultSummary.textContent = `총 ${topics.length}개 중 ${visible.length}개 유형`;
-  emptyState.hidden = visible.length !== 0;
-}
-
-function updateProgress() {
-  const count = completed.size;
-  const percentage = (count / topics.length) * 100;
-  progressCount.textContent = `${count} / ${topics.length}`;
-  progressBar.style.width = `${percentage}%`;
-  progressTrack.setAttribute("aria-valuenow", String(count));
-
-  if (count === topics.length) {
-    progressMessage.textContent = "모든 유형을 훑었습니다. 이제 약한 유형을 다시 풀어보세요.";
-  } else if (count >= 5) {
-    progressMessage.textContent = "절반을 넘었습니다. 중급 유형도 차근차근 연결해보세요.";
-  } else if (count > 0) {
-    progressMessage.textContent = "좋은 시작입니다. 다음 유형에서도 판별 신호를 먼저 찾아보세요.";
-  } else {
-    progressMessage.textContent = "가장 익숙한 유형부터 하나씩 시작해보세요.";
-  }
-}
-
-searchInput.addEventListener("input", render);
-
-filters.forEach((filter) => {
-  filter.addEventListener("click", () => {
-    activeLevel = filter.dataset.level;
-    filters.forEach((item) => {
-      item.classList.toggle("active", item === filter);
-    });
-    render();
-  });
-});
-
-resetButton.addEventListener("click", () => {
-  if (!completed.size || !window.confirm("저장된 학습 진도를 모두 초기화할까요?")) {
-    return;
-  }
-  completed = new Set();
-  saveCompleted();
-  updateProgress();
-  render();
-});
-
-updateProgress();
-render();
+] satisfies Topic[];

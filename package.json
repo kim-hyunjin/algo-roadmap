@@ -4,11 +4,16 @@
   "private": true,
   "description": "코딩 테스트 대표 유형과 풀이 패턴을 정리한 정적 학습 사이트",
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "check": "node --check src/app.js && node scripts/check.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check && node scripts/check.mjs",
     "deploy": "npm run check && npm run build && gh-pages -d dist"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "astro": "7.1.6",
+    "typescript": "6.0.3",
     "gh-pages": "6.3.0"
   }
 }
