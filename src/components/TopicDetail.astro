@@ -1,0 +1,71 @@
+---
+import type { Topic } from "../data/topics";
+import ExampleWalkthrough from "./ExampleWalkthrough.astro";
+import { examples } from "../data/examples";
+
+interface Props {
+  topic: Topic;
+}
+
+const { topic } = Astro.props;
+const example = examples[topic.id];
+
+if (!example) {
+  throw new Error(`${topic.id} 유형의 대표 문제가 없습니다.`);
+}
+---
+
+<article class="topic-detail topic-detail-page">
+  <div class="detail-block">
+    <h2>이 신호를 찾으세요</h2>
+    <ul>{topic.signals.map((item) => <li>{item}</li>)}</ul>
+  </div>
+
+  <ExampleWalkthrough {example} />
+
+  <div class="detail-block">
+    <h2>풀이 순서</h2>
+    <ol>{topic.steps.map((item) => <li>{item}</li>)}</ol>
+  </div>
+  <div class="detail-block">
+    <h2>복잡도</h2>
+    <span class="complexity">{topic.complexity}</span>
+  </div>
+  <div class="detail-block">
+    <h2>자주 하는 실수</h2>
+    <p>{topic.mistake}</p>
+  </div>
+  <div class="detail-block" data-code-tabs>
+    <h2>기본 템플릿</h2>
+    <div class="code-tabs" role="tablist" aria-label={`${topic.title} 코드 언어`}>
+      <button
+        class="code-tab active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        data-language="python"
+      >Python</button>
+      <button
+        class="code-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        data-language="javascript"
+      >JavaScript</button>
+    </div>
+    <pre data-code-language="python"><code>{topic.python}</code></pre>
+    <pre data-code-language="javascript" hidden><code>{topic.javascript}</code></pre>
+  </div>
+  <div class="detail-block">
+    <h2>연습 문제</h2>
+    <ul class="problem-list">
+      {topic.problems.map(([name, difficulty, url]) => (
+        <li>
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            <span>{name}</span><small>{difficulty} ↗</small>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</article>

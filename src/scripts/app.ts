@@ -88,60 +88,9 @@ function updateProgress(): void {
   }
 }
 
-function initializeCodeTabs(scope: HTMLElement): void {
-  const tabs = Array.from(scope.querySelectorAll<HTMLButtonElement>(".code-tab"));
-  const codeBlocks = Array.from(scope.querySelectorAll<HTMLElement>("[data-code-language]"));
-
-  for (const tab of tabs) {
-    tab.addEventListener("click", () => {
-      const language = tab.dataset.language;
-
-      for (const item of tabs) {
-        const isActive = item === tab;
-        item.classList.toggle("active", isActive);
-        item.setAttribute("aria-selected", String(isActive));
-      }
-
-      for (const block of codeBlocks) {
-        block.hidden = block.dataset.codeLanguage !== language;
-      }
-    });
-  }
-}
-
-function initializeWalkthrough(walkthrough: HTMLElement): void {
-  const frames = Array.from(walkthrough.querySelectorAll<HTMLElement>("[data-visual-frame]"));
-  const previousButton = requireElement<HTMLButtonElement>("[data-step-previous]", walkthrough);
-  const nextButton = requireElement<HTMLButtonElement>("[data-step-next]", walkthrough);
-  const currentLabel = requireElement<HTMLElement>("[data-step-current]", walkthrough);
-  let currentIndex = 0;
-
-  const showFrame = (nextIndex: number): void => {
-    currentIndex = Math.max(0, Math.min(nextIndex, frames.length - 1));
-
-    for (const [index, frame] of frames.entries()) {
-      frame.hidden = index !== currentIndex;
-    }
-
-    currentLabel.textContent = String(currentIndex + 1);
-    previousButton.disabled = currentIndex === 0;
-    nextButton.disabled = currentIndex === frames.length - 1;
-  };
-
-  previousButton.addEventListener("click", () => showFrame(currentIndex - 1));
-  nextButton.addEventListener("click", () => showFrame(currentIndex + 1));
-  showFrame(0);
-}
-
 function initializeCard(card: HTMLElement): void {
   const id = card.dataset.id;
   const checkbox = requireElement<HTMLInputElement>('input[type="checkbox"]', card);
-  const openButton = requireElement<HTMLButtonElement>(".open-topic", card);
-  const openLabel = requireElement<HTMLElement>("[data-open-label]", openButton);
-  const openIcon = requireElement<HTMLElement>("[data-open-icon]", openButton);
-  const detail = requireElement<HTMLElement>(".topic-detail", card);
-  const codeTabGroups = Array.from(detail.querySelectorAll<HTMLElement>("[data-code-tabs]"));
-  const walkthroughs = Array.from(detail.querySelectorAll<HTMLElement>("[data-walkthrough]"));
 
   if (!id) return;
 
@@ -157,17 +106,6 @@ function initializeCard(card: HTMLElement): void {
     updateProgress();
   });
 
-  openButton.addEventListener("click", () => {
-    const isOpen = openButton.getAttribute("aria-expanded") === "true";
-
-    openButton.setAttribute("aria-expanded", String(!isOpen));
-    openLabel.textContent = isOpen ? "대표 문제로 자세히 보기" : "해설 접기";
-    openIcon.textContent = isOpen ? "＋" : "−";
-    detail.hidden = isOpen;
-  });
-
-  for (const group of codeTabGroups) initializeCodeTabs(group);
-  for (const walkthrough of walkthroughs) initializeWalkthrough(walkthrough);
 }
 
 for (const card of cards) initializeCard(card);

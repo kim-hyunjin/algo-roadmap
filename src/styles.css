@@ -450,6 +450,7 @@ h1 em {
 .open-topic {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0.8rem 0;
   color: var(--ink);
@@ -459,6 +460,7 @@ h1 em {
   cursor: pointer;
   font-weight: 800;
   text-align: left;
+  text-decoration: none;
 }
 
 .open-topic:hover {
@@ -468,6 +470,68 @@ h1 em {
 .topic-detail {
   padding-top: 0.6rem;
   border-top: 1px solid var(--line);
+}
+
+.detail-page {
+  padding: 3rem 0 6rem;
+}
+
+.detail-back {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.detail-back:hover {
+  color: var(--accent-dark);
+}
+
+.topic-page-header {
+  padding: clamp(2rem, 5vw, 4rem);
+  color: white;
+  background: var(--navy);
+}
+
+.topic-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.topic-page-header .topic-number {
+  color: var(--lime);
+}
+
+.topic-page-header h1 {
+  margin: 1rem 0 0.5rem;
+  font-size: clamp(2.7rem, 7vw, 5.8rem);
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+}
+
+.topic-page-header > p {
+  max-width: 720px;
+  margin: 0;
+  color: #edf2e8;
+}
+
+.topic-page-header .topic-tags {
+  margin-bottom: 0;
+}
+
+.topic-page-header .topic-tags span {
+  color: #edf2e8;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.topic-detail-page {
+  padding: clamp(1.5rem, 5vw, 4rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 0;
 }
 
 .example-walkthrough {
@@ -768,6 +832,7 @@ h1 em {
   margin-top: 1.2rem;
 }
 
+.detail-block h2,
 .detail-block h4 {
   margin: 0 0 0.45rem;
   font-size: 0.8rem;
