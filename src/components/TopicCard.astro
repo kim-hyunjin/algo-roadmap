@@ -1,7 +1,5 @@
 ---
 import type { Topic } from "../data/topics";
-import ExampleWalkthrough from "./ExampleWalkthrough.astro";
-import { examples } from "../data/examples";
 
 interface Props {
   topic: Topic;
@@ -9,11 +7,8 @@ interface Props {
 }
 
 const { topic, index } = Astro.props;
-const example = examples[topic.id];
-
-if (!example) {
-  throw new Error(`${topic.id} 유형의 대표 문제가 없습니다.`);
-}
+const baseUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const detailUrl = `${baseUrl}topics/${topic.id}/`;
 const searchText = [topic.title, topic.summary, ...topic.tags, ...topic.signals]
   .join(" ")
   .toLocaleLowerCase("ko");
@@ -43,61 +38,8 @@ const searchText = [topic.title, topic.summary, ...topic.tags, ...topic.signals]
     {topic.tags.map((tag) => <span>{tag}</span>)}
   </div>
 
-  <button class="open-topic" type="button" aria-expanded="false">
-    <span data-open-label>대표 문제로 자세히 보기</span>
-    <span data-open-icon aria-hidden="true">＋</span>
-  </button>
-
-  <div class="topic-detail" hidden>
-    <div class="detail-block">
-      <h4>이 신호를 찾으세요</h4>
-      <ul>{topic.signals.map((item) => <li>{item}</li>)}</ul>
-    </div>
-    <ExampleWalkthrough {example} />
-    <div class="detail-block" data-code-tabs>
-      <h4>풀이 순서</h4>
-      <ol>{topic.steps.map((item) => <li>{item}</li>)}</ol>
-    </div>
-    <div class="detail-block">
-      <h4>복잡도</h4>
-      <span class="complexity">{topic.complexity}</span>
-    </div>
-    <div class="detail-block">
-      <h4>자주 하는 실수</h4>
-      <p>{topic.mistake}</p>
-    </div>
-    <div class="detail-block">
-      <h4>기본 템플릿</h4>
-      <div class="code-tabs" role="tablist" aria-label={`${topic.title} 코드 언어`}>
-        <button
-          class="code-tab active"
-          type="button"
-          role="tab"
-          aria-selected="true"
-          data-language="python"
-        >Python</button>
-        <button
-          class="code-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          data-language="javascript"
-        >JavaScript</button>
-      </div>
-      <pre data-code-language="python"><code>{topic.python}</code></pre>
-      <pre data-code-language="javascript" hidden><code>{topic.javascript}</code></pre>
-    </div>
-    <div class="detail-block">
-      <h4>연습 문제</h4>
-      <ul class="problem-list">
-        {topic.problems.map(([name, difficulty, url]) => (
-          <li>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <span>{name}</span><small>{difficulty} ↗</small>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
+  <a class="open-topic" href={detailUrl}>
+    <span>대표 문제로 자세히 보기</span>
+    <span aria-hidden="true">→</span>
+  </a>
 </article>
