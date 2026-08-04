@@ -36,7 +36,7 @@ npm run deploy
 
 `deploy` 명령은 다음 작업을 순서대로 수행합니다.
 
-1. Astro 및 TypeScript 타입과 콘텐츠 링크 검사
+1. Astro 템플릿 및 TypeScript 타입 검사
 2. Astro가 `src`를 정적 배포물인 `dist`로 빌드
 3. `dist`만 `gh-pages` 브랜치에 커밋하고 푸시
 
@@ -52,8 +52,6 @@ algo-roadmap/
 │   ├── pages/           # Astro 페이지
 │   ├── scripts/         # 브라우저 TypeScript
 │   └── styles.css
-├── scripts/
-│   └── check.mjs        # 콘텐츠 정적 검증
 ├── astro.config.mjs     # 빌드 및 GitHub Pages 기본 경로
 ├── tsconfig.json        # 엄격한 TypeScript 설정
 ├── dist/                # 로컬 빌드 결과, Git 미추적

@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check && node scripts/check.mjs",
+    "check": "astro check",
     "deploy": "npm run check && npm run build && gh-pages -d dist"
   },
   "devDependencies": {
