@@ -19,6 +19,7 @@ const { topic, index } = Astro.props;
 const homeUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
 const topicsUrl = `${homeUrl}#topics`;
 const routeUrl = `${homeUrl}#study-route`;
+const csUrl = `${homeUrl}cs/`;
 ---
 
 <!doctype html>
@@ -40,6 +41,7 @@ const routeUrl = `${homeUrl}#study-route`;
       <nav aria-label="주요 메뉴">
         <a href={topicsUrl}>유형 학습</a>
         <a href={routeUrl}>추천 순서</a>
+        <a href={csUrl}>CS 기본기</a>
       </nav>
     </header>
 

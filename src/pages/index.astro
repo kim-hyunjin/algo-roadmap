@@ -2,6 +2,9 @@
 import TopicCard from "../components/TopicCard.astro";
 import { topics } from "../data/topics";
 import "../styles.css";
+
+const baseUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const csUrl = `${baseUrl}cs/`;
 ---
 
 <!doctype html>
@@ -26,6 +29,7 @@ import "../styles.css";
       <nav aria-label="주요 메뉴">
         <a href="#topics">유형 학습</a>
         <a href="#study-route">추천 순서</a>
+        <a href={csUrl}>CS 기본기</a>
       </nav>
     </header>
 
@@ -42,6 +46,7 @@ import "../styles.css";
           <div class="hero-actions">
             <a class="button primary" href="#topics">첫 유형 시작하기</a>
             <a class="button secondary" href="#study-route">추천 순서 보기</a>
+            <a class="button secondary" href={csUrl}>AI 시대 CS 기본기 →</a>
           </div>
         </div>
 

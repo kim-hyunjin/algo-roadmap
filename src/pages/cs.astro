@@ -1,0 +1,198 @@
+---
+import { conceptCount, csModules } from "../data/csModules";
+import "../styles.css";
+
+const baseUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const topicsUrl = `${baseUrl}#topics`;
+const csUrl = `${baseUrl}cs/`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI 시대의 개발자에게 꼭 필요한 컴퓨터 구조, 운영체제, 네트워크, 데이터베이스, 소프트웨어 설계, 보안을 체계적으로 학습하세요."
+    />
+    <title>CS Foundations — AI 시대의 기본기 | Algo Roadmap</title>
+  </head>
+  <body class="cs-page">
+    <a class="skip-link" href="#curriculum">CS 학습 과정으로 건너뛰기</a>
+
+    <header class="site-header">
+      <a class="brand" href={baseUrl} aria-label="Algo Roadmap 홈">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>Algo Roadmap</span>
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a href={topicsUrl}>알고리즘</a>
+        <a class="nav-current" href={csUrl} aria-current="page">CS 기본기</a>
+        <a href="#study-plan">8주 학습법</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="cs-hero" aria-labelledby="cs-title">
+        <div class="cs-hero-copy">
+          <p class="cs-kicker">Computer science, still essential</p>
+          <h1 id="cs-title">AI가 코드를 써도,<br /><em>판단은 기본기</em>에서 나옵니다.</h1>
+          <p>
+            CS는 외울 지식의 목록이 아니라 시스템이 왜 느리고, 틀리고, 멈추고,
+            위험해지는지 추론하는 도구입니다. 아래 순서대로 개념을 익히고 작은
+            실습으로 확인하세요.
+          </p>
+          <div class="hero-actions">
+            <a class="button cs-primary" href="#curriculum">커리큘럼 시작하기</a>
+            <a class="button cs-secondary" href="#study-plan">8주 경로 먼저 보기</a>
+          </div>
+        </div>
+
+        <aside class="cs-system-map" aria-label="CS 학습 영역 지도">
+          <p class="map-label">SYSTEM MAP / 2026</p>
+          <div class="map-core">
+            <span>YOU</span>
+            <strong>판단과 검증</strong>
+          </div>
+          <ol>
+            {csModules.map((module) => (
+              <li><span>{module.number}</span><a href={`#${module.id}`}>{module.title}</a></li>
+            ))}
+          </ol>
+        </aside>
+      </section>
+
+      <section class="cs-manifesto" aria-label="AI 시대에 CS가 필요한 세 가지 이유">
+        <article>
+          <span class="manifesto-number">01</span>
+          <div><h2>생성보다 검증</h2><p>코드는 빨리 만들 수 있어도 정확성·복잡도·보안은 스스로 판단해야 합니다.</p></div>
+        </article>
+        <article>
+          <span class="manifesto-number">02</span>
+          <div><h2>증상보다 원인</h2><p>오류 메시지 뒤의 메모리, 네트워크, 동시성 원인을 계층별로 좁힙니다.</p></div>
+        </article>
+        <article>
+          <span class="manifesto-number">03</span>
+          <div><h2>도구보다 원리</h2><p>프레임워크가 바뀌어도 남는 원리로 새 기술을 더 빠르게 배웁니다.</p></div>
+        </article>
+      </section>
+
+      <section class="cs-roadmap" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Dependency map</p><h2 id="roadmap-title">위에서 아래로 연결하세요</h2></div>
+          <p>앞 영역의 개념이 뒤 영역의 판단 근거가 됩니다. 완벽하게 끝내기보다 한 바퀴 돌고 프로젝트에서 반복하세요.</p>
+        </div>
+        <div class="cs-path" aria-label="학습 순서">
+          {csModules.map((module, index) => (
+            <a href={`#${module.id}`}>
+              <span>{module.number}</span>
+              <strong>{module.title}</strong>
+              {index < csModules.length - 1 && <i aria-hidden="true">→</i>}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <div class="cs-learning-layout">
+        <aside class="cs-progress-panel" aria-labelledby="progress-heading">
+          <p class="eyebrow">Your progress</p>
+          <div class="cs-progress-title"><h2 id="progress-heading">학습 현황</h2><strong id="cs-progress-count">0 / {conceptCount}</strong></div>
+          <div id="cs-progress-track" class="progress-track" role="progressbar" aria-label="CS 학습 진도" aria-valuemin="0" aria-valuemax={conceptCount} aria-valuenow="0">
+            <span id="cs-progress-bar"></span>
+          </div>
+          <p id="cs-progress-copy">한 번에 하나씩, 직접 설명할 수 있을 때 체크하세요.</p>
+          <button id="cs-reset" class="text-button" type="button">진도 초기화</button>
+          <div class="cs-nav-list">
+            <span>CURRICULUM</span>
+            {csModules.map((module) => <a href={`#${module.id}`}><b>{module.number}</b>{module.title}</a>)}
+          </div>
+        </aside>
+
+        <section id="curriculum" class="cs-curriculum" aria-label="CS 기본기 커리큘럼">
+          {csModules.map((module) => (
+            <article id={module.id} class={`cs-module accent-${module.accent}`}>
+              <header class="cs-module-header">
+                <span class="cs-module-number">{module.number}</span>
+                <div>
+                  <p>FOUNDATION MODULE</p>
+                  <h2>{module.title}</h2>
+                  <span>{module.description}</span>
+                </div>
+              </header>
+              <div class="cs-outcome"><span>이 모듈을 마치면</span><strong>{module.outcome}</strong></div>
+
+              <div class="cs-concepts">
+                {module.concepts.map((concept, conceptIndex) => (
+                  <details class="cs-concept" open={module.number === "01" && conceptIndex === 0}>
+                    <summary>
+                      <span class="concept-index">{module.number}.{conceptIndex + 1}</span>
+                      <span class="concept-title"><strong>{concept.title}</strong><small>{concept.subtitle}</small></span>
+                      <span class="concept-action" aria-hidden="true">열기</span>
+                    </summary>
+                    <div class="concept-body">
+                      <div class="concept-lead">
+                        <div><span class="mini-label">핵심 원리</span><p>{concept.core}</p></div>
+                        <aside><span class="mini-label">AI 시대의 연결점</span><p>{concept.aiWhy}</p></aside>
+                      </div>
+                      <div class="concept-grid">
+                        <div>
+                          <span class="mini-label">스스로 답할 질문</span>
+                          <ul>{concept.questions.map((question) => <li>{question}</li>)}</ul>
+                        </div>
+                        <div>
+                          <span class="mini-label">30분 미니 실습</span>
+                          <p>{concept.practice}</p>
+                        </div>
+                      </div>
+                      <label class="cs-check">
+                        <input type="checkbox" data-cs-check={concept.id} />
+                        <span><b>학습 완료</b><small>{concept.checkpoint}</small></span>
+                      </label>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </article>
+          ))}
+        </section>
+      </div>
+
+      <section id="study-plan" class="cs-study-plan" aria-labelledby="plan-title">
+        <div class="cs-plan-intro">
+          <p class="eyebrow">8-week field guide</p>
+          <h2 id="plan-title">읽기 30, 실습 60,<br />설명하기 10</h2>
+          <p>하루 60~90분, 주 3회를 기준으로 합니다. 매주 작은 결과물을 남기면 지식이 프로젝트의 판단력으로 바뀝니다.</p>
+        </div>
+        <ol class="cs-week-list">
+          <li><span>W01</span><div><strong>데이터 표현 + 복잡도</strong><p>숫자 실험과 배열 성능 측정</p></div></li>
+          <li><span>W02</span><div><strong>CPU + 운영체제</strong><p>프로세스 관찰과 메모리 실험</p></div></li>
+          <li><span>W03</span><div><strong>동시성 + I/O</strong><p>race condition 재현과 스트리밍</p></div></li>
+          <li><span>W04</span><div><strong>네트워크 + 웹</strong><p>한 API 요청의 전 구간 추적</p></div></li>
+          <li><span>W05</span><div><strong>SQL + 인덱스</strong><p>작은 스키마와 쿼리 플랜 분석</p></div></li>
+          <li><span>W06</span><div><strong>트랜잭션 + 캐시</strong><p>부분 실패와 오래된 데이터 실험</p></div></li>
+          <li><span>W07</span><div><strong>설계 + 테스트</strong><p>AI 생성 코드의 계약과 테스트 작성</p></div></li>
+          <li><span>W08</span><div><strong>보안 + AI 시스템</strong><p>권한표와 AI 평가셋 완성</p></div></li>
+        </ol>
+      </section>
+
+      <section class="cs-finish">
+        <p>FINAL CHECK</p>
+        <h2>“설명할 수 있는가?”가<br />진짜 완료 기준입니다.</h2>
+        <div>
+          <span>① 그림 없이 3분 설명</span>
+          <span>② 작은 코드로 재현</span>
+          <span>③ 실제 장애와 연결</span>
+        </div>
+        <a class="button cs-primary" href="#curriculum">첫 개념부터 시작하기 ↑</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>도구는 바뀌어도, 시스템을 보는 눈은 남습니다.</p>
+      <a href={baseUrl}>Algo Roadmap 홈으로 →</a>
+    </footer>
+
+    <script src="../scripts/cs.ts"></script>
+  </body>
+</html>
