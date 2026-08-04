@@ -30,6 +30,9 @@ export interface RepresentativeExample {
   prompt: string;
   input: string;
   output: string;
+  inputContract: string;
+  timeComplexity: string;
+  spaceComplexity: string;
   keyIdea: string;
   reasoning: Array<{
     title: string;
@@ -47,6 +50,9 @@ export const examples: Record<string, RepresentativeExample> = {
     prompt: "정수 배열에서 합이 target이 되는 서로 다른 두 원소의 인덱스를 찾으세요.",
     input: "nums = [2, 7, 11, 15], target = 9",
     output: "[0, 1]",
+    inputContract: "정수 배열에서 서로 다른 두 인덱스를 사용합니다. 답이 없으면 빈 배열을 반환합니다.",
+    timeComplexity: "평균 O(N)",
+    spaceComplexity: "O(N)",
     keyIdea:
       "현재 값 x를 볼 때 필요한 값 target - x가 앞에서 등장했는지만 해시에서 찾습니다. 모든 쌍을 다시 비교하지 않아도 됩니다.",
     reasoning: [
@@ -98,6 +104,9 @@ export const examples: Record<string, RepresentativeExample> = {
     prompt: "문자열의 모든 괄호가 올바른 순서로 열리고 닫히는지 판별하세요.",
     input: "s = \"({[]})\"",
     output: "true",
+    inputContract: "입력은 여섯 괄호 문자 (), {}, []로만 구성됩니다.",
+    timeComplexity: "O(N)",
+    spaceComplexity: "최악 O(N)",
     keyIdea:
       "여는 괄호는 스택에 쌓고, 닫는 괄호를 만나면 스택 맨 위와 짝이 맞는지 확인합니다. 가장 최근에 열린 괄호가 먼저 닫혀야 합니다.",
     reasoning: [
@@ -135,7 +144,10 @@ export const examples: Record<string, RepresentativeExample> = {
     title: "모든 부분집합",
     prompt: "서로 다른 숫자 배열의 모든 부분집합을 만드세요.",
     input: "nums = [1, 2, 3]",
-    output: "[], [1], [2], [3], [1,2], [1,3], [2,3], [1,2,3]",
+    output: "[1,2,3], [1,2], [1,3], [1], [2,3], [2], [3], [] (순서는 무관)",
+    inputContract: "nums의 값은 서로 다릅니다. 부분집합의 나열 순서는 정답에 영향을 주지 않습니다.",
+    timeComplexity: "O(N · 2ᴺ) — 각 결과 복사 비용 포함",
+    spaceComplexity: "출력 O(N · 2ᴺ), 재귀 보조 공간 O(N)",
     keyIdea:
       "각 숫자마다 ‘고른다’와 ‘고르지 않는다’ 두 갈래를 모두 탐색합니다. 선택한 뒤 재귀 호출하고, 돌아오면 선택을 취소해야 다른 갈래를 탐색할 수 있습니다.",
     reasoning: [
@@ -180,6 +192,9 @@ export const examples: Record<string, RepresentativeExample> = {
     prompt: "시작·종료 시간이 주어진 회의 중 서로 겹치지 않게 가장 많은 회의를 고르세요.",
     input: "meetings = [(1,3), (2,5), (4,6), (6,7)]",
     output: "3개: (1,3), (4,6), (6,7)",
+    inputContract: "회의는 [start, end) 구간입니다. end와 다음 start가 같으면 겹치지 않으며 코드는 입력 배열을 정렬합니다.",
+    timeComplexity: "O(N log N)",
+    spaceComplexity: "선택 결과 O(N), 정렬 보조 공간은 언어 구현에 따라 다름",
     keyIdea:
       "가장 빨리 끝나는 회의를 고르면 뒤에 남는 시간이 최대가 됩니다. 종료 시간순으로 정렬하고, 직전에 고른 회의가 끝난 뒤 시작하는 회의만 선택합니다.",
     reasoning: [
@@ -219,6 +234,9 @@ export const examples: Record<string, RepresentativeExample> = {
     prompt: "정렬된 배열에서 target 이상인 값이 처음 나타나는 인덱스를 찾으세요.",
     input: "values = [1, 3, 5, 7, 9, 11], target = 7",
     output: "3",
+    inputContract: "values는 오름차순입니다. target 이상인 값이 없으면 values.length를 반환합니다.",
+    timeComplexity: "O(log N)",
+    spaceComplexity: "O(1)",
     keyIdea:
       "‘values[i]가 7 이상인가?’는 배열에서 거짓 구간 뒤에 참 구간이 이어지는 단조 조건입니다. 참이 처음 시작되는 경계를 이분 탐색합니다.",
     reasoning: [
@@ -256,6 +274,9 @@ export const examples: Record<string, RepresentativeExample> = {
     prompt: "양수 배열에서 합이 target 이상인 가장 짧은 연속 부분 배열의 길이를 구하세요.",
     input: "nums = [2, 3, 1, 2, 4, 3], target = 7",
     output: "2 — [4, 3]",
+    inputContract: "nums의 모든 값과 target은 양수입니다. 답이 없으면 0을 반환합니다.",
+    timeComplexity: "O(N)",
+    spaceComplexity: "O(1)",
     keyIdea:
       "오른쪽 포인터로 합을 늘리고, 조건을 만족하는 동안 왼쪽 포인터를 당겨 가장 짧은 구간을 찾습니다. 모든 값이 양수라 포인터 이동 방향이 안전합니다.",
     reasoning: [
@@ -296,14 +317,17 @@ export const examples: Record<string, RepresentativeExample> = {
   "graph-search": {
     title: "격자에서 최단 거리 찾기",
     prompt: "0은 이동 가능, 1은 벽인 격자에서 S부터 G까지 상하좌우 최소 이동 횟수를 구하세요.",
-    input: "S 0 1 / 1 0 0 / 0 0 G",
+    input: "grid = [[0,0,1],[1,0,0],[0,0,0]], start = (0,0), goal = (2,2)",
     output: "4",
+    inputContract: "grid에서 0은 이동 가능, 1은 벽입니다. S와 G 표시는 시각화에만 사용하고 실제 위치는 start와 goal 좌표로 전달합니다.",
+    timeComplexity: "O(행 × 열)",
+    spaceComplexity: "O(행 × 열)",
     keyIdea:
       "모든 이동 비용이 1이므로 BFS를 사용합니다. 시작점에서 가까운 칸부터 큐로 처리하면 목표를 처음 방문한 거리가 곧 최단 거리입니다.",
     reasoning: [
       { title: "큐에 넣을 때 방문", description: "같은 칸이 중복으로 큐에 들어가지 않도록 발견 즉시 방문 표시합니다." },
       { title: "거리 전파", description: "이웃 칸의 거리는 현재 칸의 거리 + 1로 기록합니다." },
-      { title: "목표 발견", description: "BFS는 거리 순서대로 처리하므로 G를 처음 발견한 순간 더 짧은 경로는 없습니다." },
+      { title: "목표 확인", description: "BFS는 거리 순서대로 처리하므로 G를 처음 큐에서 꺼낸 거리가 최단 거리입니다." },
     ],
     python: `from collections import deque
 
@@ -341,7 +365,7 @@ def shortest_path(grid, start, goal):
       { title: "거리 0: 시작점", description: "S를 방문 표시하고 큐에 넣습니다.", rows: [{ label: "0", cells: [{ value: "S·0", state: "active" }, "·", { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, "·", "·"] }, { label: "2", cells: ["·", "·", "G"] }, { label: "queue", cells: [{ value: "S", state: "active" }] }] },
       { title: "거리 1: 오른쪽 칸", description: "S의 유일한 이동 가능 이웃을 발견하고 거리 1로 큐에 넣습니다.", rows: [{ label: "0", cells: [{ value: "S·0", state: "visited" }, { value: "·1", state: "active" }, { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, "·", "·"] }, { label: "2", cells: ["·", "·", "G"] }] },
       { title: "거리 2와 3으로 확장", description: "아래로 내려간 뒤 오른쪽과 아래 칸을 같은 거리 순서로 방문합니다.", rows: [{ label: "0", cells: [{ value: "S·0", state: "visited" }, { value: "·1", state: "visited" }, { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, { value: "·2", state: "visited" }, { value: "·3", state: "candidate" }] }, { label: "2", cells: ["·", { value: "·3", state: "active" }, "G"] }] },
-      { title: "거리 4: 목표 발견", description: "거리 3인 칸에서 G를 발견합니다. 처음 발견한 거리 4가 최단 거리입니다.", rows: [{ label: "0", cells: ["S·0", "·1", { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, "·2", "·3"] }, { label: "2", cells: ["·", { value: "·3", state: "visited" }, { value: "G·4", state: "success" }] }] },
+      { title: "거리 4: 목표 확인", description: "거리 3인 칸에서 G를 큐에 넣고, 거리 4의 G를 꺼내면 최단 거리가 확정됩니다.", rows: [{ label: "0", cells: ["S·0", "·1", { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, "·2", "·3"] }, { label: "2", cells: ["·", { value: "·3", state: "visited" }, { value: "G·4", state: "success" }] }] },
     ],
   },
   "dynamic-programming": {
@@ -349,6 +373,9 @@ def shortest_path(grid, start, goal):
     prompt: "한 번에 1칸 또는 2칸을 오를 수 있을 때 n번째 계단에 도달하는 방법의 수를 구하세요.",
     input: "n = 5",
     output: "8",
+    inputContract: "n은 0 이상의 정수입니다. n = 0은 아무것도 하지 않는 한 가지 방법으로 셉니다.",
+    timeComplexity: "O(N)",
+    spaceComplexity: "O(N), 직전 두 값만 저장하면 O(1)로 축소 가능",
     keyIdea:
       "n번째 계단의 마지막 이동은 n-1에서 1칸 오거나 n-2에서 2칸 오르는 두 경우뿐입니다. 따라서 dp[n] = dp[n-1] + dp[n-2]입니다.",
     reasoning: [
@@ -357,12 +384,15 @@ def shortest_path(grid, start, goal):
       { title: "작은 답 재사용", description: "2부터 n까지 앞의 두 값을 더해 한 번씩만 계산합니다." },
     ],
     python: `def climb_stairs(n):
+    if n <= 1:
+        return 1
     dp = [0] * (n + 1)
     dp[0] = dp[1] = 1
     for stair in range(2, n + 1):
         dp[stair] = dp[stair - 1] + dp[stair - 2]
     return dp[n]`,
     javascript: `function climbStairs(n) {
+  if (n <= 1) return 1;
   const dp = Array(n + 1).fill(0);
   dp[0] = dp[1] = 1;
   for (let stair = 2; stair <= n; stair++) {
@@ -383,6 +413,9 @@ def shortest_path(grid, start, goal):
     prompt: "S에서 모든 노드까지의 최소 비용을 구하세요. 간선은 S-A 4, S-B 1, B-A 2, A-C 1, B-C 5입니다.",
     input: "start = S",
     output: "S=0, B=1, A=3, C=4",
+    inputContract: "모든 가중치는 0 이상이고 모든 노드는 빈 인접 목록이라도 graph의 키로 존재합니다. graph는 방향 그래프 인접 리스트입니다.",
+    timeComplexity: "인접 리스트 + 이진 최소 힙 기준 O((V + E) log V)",
+    spaceComplexity: "dist와 힙 O(V + E), 입력 그래프 O(V + E)",
     keyIdea:
       "다익스트라는 현재까지 거리가 가장 짧은 노드를 확정하고, 그 노드를 거쳐 이웃으로 가는 비용이 더 작으면 갱신합니다.",
     reasoning: [
@@ -411,7 +444,7 @@ def dijkstra(graph, start):
   dist[start] = 0;
   heap.push([0, start]);
   while (!heap.isEmpty()) {
-    const [cost, node] = heap.pop();
+    const [cost, node] = heap.popMin();
     if (cost !== dist[node]) continue;
     for (const [next, weight] of graph[node]) {
       const nextCost = cost + weight;
@@ -436,6 +469,9 @@ def dijkstra(graph, start):
     prompt: "A, B, C, D를 잇는 간선 중 전체를 연결하면서 비용 합이 최소인 간선을 고르세요.",
     input: "AB=1, BC=2, AC=3, CD=4, BD=5",
     output: "AB, BC, CD — 총비용 7",
+    inputContract: "가중치가 있는 무방향 연결 그래프입니다. 연결되지 않은 입력에는 MST가 존재하지 않습니다.",
+    timeComplexity: "O(E log E)",
+    spaceComplexity: "O(V + E) — parent·size와 정렬된 간선·결과 포함",
     keyIdea:
       "크루스칼 알고리즘은 간선을 비용순으로 보고, 서로 다른 집합을 잇는 간선만 선택합니다. 유니온 파인드로 두 노드가 이미 연결됐는지 빠르게 검사합니다.",
     reasoning: [
@@ -445,6 +481,7 @@ def dijkstra(graph, start):
     ],
     python: `def kruskal(nodes, edges):
     parent = {node: node for node in nodes}
+    size = {node: 1 for node in nodes}
     def find(x):
         if parent[x] != x:
             parent[x] = find(parent[x])
@@ -453,12 +490,20 @@ def dijkstra(graph, start):
     for weight, a, b in sorted(edges):
         root_a, root_b = find(a), find(b)
         if root_a != root_b:
+            if size[root_a] < size[root_b]:
+                root_a, root_b = root_b, root_a
             parent[root_b] = root_a
+            size[root_a] += size[root_b]
             chosen.append((a, b))
             cost += weight
+            if len(chosen) == len(nodes) - 1:
+                break
+    if len(chosen) != len(nodes) - 1:
+        raise ValueError("graph is disconnected")
     return chosen, cost`,
     javascript: `function kruskal(nodes, edges) {
   const parent = Object.fromEntries(nodes.map(node => [node, node]));
+  const size = Object.fromEntries(nodes.map(node => [node, 1]));
   const find = x => parent[x] === x ? x : (parent[x] = find(parent[x]));
   const chosen = [];
   let cost = 0;
@@ -466,11 +511,16 @@ def dijkstra(graph, start):
   for (const [weight, a, b] of edges) {
     const rootA = find(a), rootB = find(b);
     if (rootA !== rootB) {
-      parent[rootB] = rootA;
+      let large = rootA, small = rootB;
+      if (size[large] < size[small]) [large, small] = [small, large];
+      parent[small] = large;
+      size[large] += size[small];
       chosen.push([a, b]);
       cost += weight;
+      if (chosen.length === nodes.length - 1) break;
     }
   }
+  if (chosen.length !== nodes.length - 1) throw new Error("graph is disconnected");
   return { chosen, cost };
 }`,
     visualizationLabel: "크루스칼 알고리즘이 간선을 선택하고 집합을 합치는 과정",

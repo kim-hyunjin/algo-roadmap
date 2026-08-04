@@ -9,7 +9,14 @@ interface Props {
 const { topic, index } = Astro.props;
 const baseUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
 const detailUrl = `${baseUrl}topics/${topic.id}/`;
-const searchText = [topic.title, topic.summary, ...topic.tags, ...topic.signals]
+const searchText = [
+  topic.title,
+  topic.summary,
+  ...topic.tags,
+  ...topic.signals,
+  ...topic.preconditions,
+  ...topic.doesNotApply,
+]
   .join(" ")
   .toLocaleLowerCase("ko");
 ---

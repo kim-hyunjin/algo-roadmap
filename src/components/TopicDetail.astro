@@ -21,6 +21,17 @@ if (!example) {
     <ul>{topic.signals.map((item) => <li>{item}</li>)}</ul>
   </div>
 
+  <div class="topic-conditions">
+    <div class="detail-block">
+      <h2>적용 조건</h2>
+      <ul>{topic.preconditions.map((item) => <li>{item}</li>)}</ul>
+    </div>
+    <div class="detail-block caution-block">
+      <h2>그대로 쓰면 안 되는 경우</h2>
+      <ul>{topic.doesNotApply.map((item) => <li>{item}</li>)}</ul>
+    </div>
+  </div>
+
   <ExampleWalkthrough {example} />
 
   <div class="detail-block">
@@ -30,13 +41,17 @@ if (!example) {
   <div class="detail-block">
     <h2>복잡도</h2>
     <span class="complexity">{topic.complexity}</span>
+    <ul class="complexity-notes">
+      {topic.complexityNotes.map((item) => <li>{item}</li>)}
+    </ul>
   </div>
   <div class="detail-block">
     <h2>자주 하는 실수</h2>
     <p>{topic.mistake}</p>
   </div>
   <div class="detail-block" data-code-tabs>
-    <h2>기본 템플릿</h2>
+    <h2>문제에 맞춰 완성하는 기본 골격</h2>
+    <p class="template-note">정의되지 않은 변수와 함수는 문제의 입력·상태·반환 규칙에 맞게 채워야 합니다.</p>
     <div class="code-tabs" role="tablist" aria-label={`${topic.title} 코드 언어`}>
       <button
         class="code-tab active"
@@ -59,10 +74,19 @@ if (!example) {
   <div class="detail-block">
     <h2>연습 문제</h2>
     <ul class="problem-list">
-      {topic.problems.map(([name, difficulty, url]) => (
+      {topic.problems.map(({ name, difficulty, url, relation, note }) => (
         <li>
           <a href={url} target="_blank" rel="noopener noreferrer">
-            <span>{name}</span><small>{difficulty} ↗</small>
+            <span>
+              <strong>{name}</strong>
+              {note && <em>{note}</em>}
+            </span>
+            <small>
+              <b class={`relation-badge relation-${relation}`}>
+                {relation === "direct" ? "직접 적용" : "변형"}
+              </b>
+              {difficulty} ↗
+            </small>
           </a>
         </li>
       ))}

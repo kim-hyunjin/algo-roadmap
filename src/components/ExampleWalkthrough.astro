@@ -27,6 +27,18 @@ const getState = (cell: VisualCell) =>
       <dt>출력</dt>
       <dd><code>{example.output}</code></dd>
     </div>
+    <div class="example-contract">
+      <dt>입력 조건</dt>
+      <dd>{example.inputContract}</dd>
+    </div>
+    <div>
+      <dt>시간 복잡도</dt>
+      <dd><code>{example.timeComplexity}</code></dd>
+    </div>
+    <div>
+      <dt>공간 복잡도</dt>
+      <dd><code>{example.spaceComplexity}</code></dd>
+    </div>
   </dl>
 
   <div class="example-key-idea">

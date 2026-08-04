@@ -29,7 +29,7 @@ const csUrl = `${baseUrl}cs/`;
       <nav aria-label="주요 메뉴">
         <a href={topicsUrl}>알고리즘</a>
         <a class="nav-current" href={csUrl} aria-current="page">CS 기본기</a>
-        <a href="#study-plan">8주 학습법</a>
+        <a href="#study-plan">9주 학습법</a>
       </nav>
     </header>
 
@@ -45,12 +45,12 @@ const csUrl = `${baseUrl}cs/`;
           </p>
           <div class="hero-actions">
             <a class="button cs-primary" href="#curriculum">커리큘럼 시작하기</a>
-            <a class="button cs-secondary" href="#study-plan">8주 경로 먼저 보기</a>
+            <a class="button cs-secondary" href="#study-plan">9주 경로 먼저 보기</a>
           </div>
         </div>
 
         <aside class="cs-system-map" aria-label="CS 학습 영역 지도">
-          <p class="map-label">SYSTEM MAP / 2026</p>
+          <p class="map-label">LAST REVIEW / 2026-08-04</p>
           <div class="map-core">
             <span>YOU</span>
             <strong>판단과 검증</strong>
@@ -156,6 +156,20 @@ const csUrl = `${baseUrl}cs/`;
                           ))}
                         </ol>
                       </details>
+                      {concept.references && (
+                        <div class="concept-references">
+                          <span class="mini-label">공식 근거</span>
+                          <ul>
+                            {concept.references.map((reference) => (
+                              <li>
+                                <a href={reference.url} target="_blank" rel="noopener noreferrer">
+                                  {reference.title} ↗
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                       <label class="cs-check">
                         <input type="checkbox" data-cs-check={concept.id} />
                         <span><b>학습 완료</b><small>{concept.checkpoint}</small></span>
@@ -171,19 +185,20 @@ const csUrl = `${baseUrl}cs/`;
 
       <section id="study-plan" class="cs-study-plan" aria-labelledby="plan-title">
         <div class="cs-plan-intro">
-          <p class="eyebrow">8-week field guide</p>
-          <h2 id="plan-title">읽기 30, 실습 60,<br />설명하기 10</h2>
-          <p>하루 60~90분, 주 3회를 기준으로 합니다. 매주 작은 결과물을 남기면 지식이 프로젝트의 판단력으로 바뀝니다.</p>
+          <p class="eyebrow">9-week field guide</p>
+          <h2 id="plan-title">시간 비중은 읽기 30%,<br />실습 60%, 설명 10%</h2>
+          <p>하루 60~90분, 주 3회를 기준으로 합니다. 세 번째 학습일에는 이전 주 내용을 3분 설명한 뒤 새 실습을 시작합니다.</p>
         </div>
         <ol class="cs-week-list">
-          <li><span>W01</span><div><strong>데이터 표현 + 복잡도</strong><p>숫자 실험과 배열 성능 측정</p></div></li>
-          <li><span>W02</span><div><strong>CPU + 운영체제</strong><p>프로세스 관찰과 메모리 실험</p></div></li>
-          <li><span>W03</span><div><strong>동시성 + I/O</strong><p>race condition 재현과 스트리밍</p></div></li>
-          <li><span>W04</span><div><strong>네트워크 + 웹</strong><p>한 API 요청의 전 구간 추적</p></div></li>
-          <li><span>W05</span><div><strong>SQL + 인덱스</strong><p>작은 스키마와 쿼리 플랜 분석</p></div></li>
-          <li><span>W06</span><div><strong>트랜잭션 + 캐시</strong><p>부분 실패와 오래된 데이터 실험</p></div></li>
-          <li><span>W07</span><div><strong>설계 + 테스트</strong><p>AI 생성 코드의 계약과 테스트 작성</p></div></li>
-          <li><span>W08</span><div><strong>보안 + AI 시스템</strong><p>권한표와 AI 평가셋 완성</p></div></li>
+          <li><span>W01</span><div><strong>데이터 표현 + 복잡도</strong><p>숫자 실험과 배열 성능 측정</p><small>완료: 결과 차이를 3분 설명하고 측정 기록을 남깁니다.</small></div></li>
+          <li><span>W02</span><div><strong>CPU + 프로세스·스레드</strong><p>프로세스 관찰과 실행 방식 비교</p><small>완료: CPU·I/O 작업의 실행 방식을 근거와 함께 고릅니다.</small></div></li>
+          <li><span>W03</span><div><strong>동시성 + 메모리·I/O</strong><p>race condition 재현과 스트리밍</p><small>완료: 잠금 전후 결과와 파일 읽기 메모리를 측정합니다.</small></div></li>
+          <li><span>W04</span><div><strong>네트워크 + 웹 + 실패</strong><p>한 API 요청의 전 구간과 재시도 추적</p><small>완료: timeout·jitter·중복 방지 정책을 포함한 호출 흐름을 그립니다.</small></div></li>
+          <li><span>W05</span><div><strong>SQL + 인덱스</strong><p>작은 스키마와 쿼리 플랜 분석</p><small>완료: 인덱스 전후 플랜과 join 행 수를 비교합니다.</small></div></li>
+          <li><span>W06</span><div><strong>트랜잭션 + 캐시</strong><p>부분 실패와 오래된 데이터 실험</p><small>완료: 트랜잭션 경계와 캐시 무효화 정책을 문서화합니다.</small></div></li>
+          <li><span>W07</span><div><strong>설계 + 테스트</strong><p>AI 생성 코드의 계약과 테스트 작성</p><small>완료: 정상·경계·오류·불변식 테스트가 있는 작은 모듈을 만듭니다.</small></div></li>
+          <li><span>W08</span><div><strong>관측성 + 보안</strong><p>요청 추적과 역할별 권한표 작성</p><small>완료: 민감정보 없는 로그와 거부되어야 할 요청 목록을 만듭니다.</small></div></li>
+          <li><span>W09</span><div><strong>AI 파이프라인 + 평가</strong><p>검색·도구 경계와 slice별 평가셋 완성</p><small>완료: 품질·비용·지연·안전 기준과 롤백 조건을 수치로 정합니다.</small></div></li>
         </ol>
       </section>
 
@@ -201,6 +216,7 @@ const csUrl = `${baseUrl}cs/`;
 
     <footer>
       <p>도구는 바뀌어도, 시스템을 보는 눈은 남습니다.</p>
+      <small>콘텐츠 마지막 검토: 2026-08-04 · 각 개념의 공식 근거 링크는 본문에 표시했습니다.</small>
       <a href={baseUrl}>Algo Roadmap 홈으로 →</a>
     </footer>
 
