@@ -141,10 +141,21 @@ const csUrl = `${baseUrl}cs/`;
                           <ul>{concept.questions.map((question) => <li>{question}</li>)}</ul>
                         </div>
                         <div>
-                          <span class="mini-label">30분 미니 실습</span>
+                          <span class="mini-label">실습하기</span>
                           <p>{concept.practice}</p>
                         </div>
                       </div>
+                      <details class="concept-answers">
+                        <summary>
+                          <span class="mini-label">스스로 답할 질문의 정답</span>
+                          <span class="answer-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <ol>
+                          {concept.answers.map((answer, answerIndex) => (
+                            <li><span>{answerIndex + 1}</span><p>{answer}</p></li>
+                          ))}
+                        </ol>
+                      </details>
                       <label class="cs-check">
                         <input type="checkbox" data-cs-check={concept.id} />
                         <span><b>학습 완료</b><small>{concept.checkpoint}</small></span>

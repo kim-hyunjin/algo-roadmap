@@ -1559,7 +1559,7 @@ footer p {
   background: #f5f8e5;
 }
 
-.cs-concept summary {
+.cs-concept > summary {
   min-height: 92px;
   display: grid;
   grid-template-columns: 62px 1fr auto;
@@ -1570,11 +1570,11 @@ footer p {
   list-style: none;
 }
 
-.cs-concept summary::-webkit-details-marker {
+.cs-concept > summary::-webkit-details-marker {
   display: none;
 }
 
-.cs-concept summary:hover {
+.cs-concept > summary:hover {
   background: rgba(184, 217, 236, 0.18);
 }
 
@@ -1682,6 +1682,88 @@ footer p {
   padding-left: 1rem;
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.concept-answers {
+  margin-top: 1px;
+  background: #f7f5ee;
+  border: 1px solid var(--line);
+}
+
+.concept-answers > summary {
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.concept-answers > summary::-webkit-details-marker {
+  display: none;
+}
+
+.concept-answers > summary:hover {
+  background: rgba(184, 217, 236, 0.18);
+}
+
+.concept-answers .mini-label {
+  margin: 0;
+}
+
+.answer-toggle {
+  flex: none;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.answer-toggle::after {
+  content: "정답 확인하기 +";
+}
+
+.concept-answers[open] .answer-toggle::after {
+  content: "정답 닫기 −";
+}
+
+.concept-answers ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 1rem 1rem;
+  list-style: none;
+  counter-reset: none;
+}
+
+.concept-answers li {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  gap: 0.55rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.concept-answers li > span {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: grid;
+  place-items: center;
+  color: var(--accent-dark);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.concept-answers li p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.65;
 }
 
 .cs-check {
@@ -1862,7 +1944,7 @@ footer p {
     height: 54px;
   }
 
-  .cs-concept summary {
+  .cs-concept > summary {
     grid-template-columns: 42px 1fr auto;
     gap: 0.6rem;
     padding-inline: 0.8rem;
