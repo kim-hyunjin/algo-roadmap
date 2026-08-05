@@ -23,8 +23,6 @@ export interface Topic {
   complexity: string;
   complexityNotes: string[];
   mistake: string;
-  python: string;
-  javascript: string;
   problems: PracticeProblem[];
 }
 
@@ -42,13 +40,6 @@ export const topics = [
     complexity: "평균 O(N), 보조 공간 O(N)",
     complexityNotes: ["해시 조회와 갱신은 평균 O(1)이며 충돌이 심한 최악의 경우는 구현에 따라 달라집니다."],
     mistake: "Python 딕셔너리 키는 hashable해야 합니다. JavaScript Map의 객체 키는 내용이 아니라 객체 동일성으로 비교됩니다.",
-    python: `count = {}
-for value in values:
-    count[value] = count.get(value, 0) + 1`,
-    javascript: `const count = new Map();
-for (const value of values) {
-  count.set(value, (count.get(value) ?? 0) + 1);
-}`,
     problems: [
       { name: "LeetCode — Contains Duplicate", difficulty: "Easy", url: "https://leetcode.com/problems/contains-duplicate/", relation: "direct" },
       { name: "LeetCode — Valid Anagram", difficulty: "Easy", url: "https://leetcode.com/problems/valid-anagram/", relation: "direct" },
@@ -68,16 +59,6 @@ for (const value of values) {
     complexity: "일반적인 push/pop·enqueue/dequeue O(1), 전체 O(N)",
     complexityNotes: ["두 스택으로 만든 큐의 dequeue는 한 번에 O(N)이 들 수 있지만 연속 연산 전체로는 분할상환 O(1)입니다."],
     mistake: "JavaScript에서 배열의 shift는 O(N)입니다. 큐의 앞쪽 인덱스를 따로 관리하세요.",
-    python: `from collections import deque
-
-queue = deque([start])
-while queue:
-    current = queue.popleft()`,
-    javascript: `const queue = [start];
-let head = 0;
-while (head < queue.length) {
-  const current = queue[head++];
-}`,
     problems: [
       { name: "LeetCode — Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", relation: "direct" },
       { name: "LeetCode — Implement Queue using Stacks", difficulty: "Easy", url: "https://leetcode.com/problems/implement-queue-using-stacks/", relation: "variant", note: "두 스택으로 큐를 만들고 분할상환 O(1)을 설명합니다." },
@@ -97,25 +78,6 @@ while (head < queue.length) {
     complexity: "상태 수에 따라 O(2ᴺ), O(N!) 등, 재귀 보조 공간 O(N)",
     complexityNotes: ["결과 자체를 모두 반환하면 복사와 출력 크기도 시간·공간 복잡도에 포함합니다."],
     mistake: "백트래킹 후 방문 표시나 변경한 값을 복구하지 않는 실수를 가장 먼저 확인하세요.",
-    python: `def search(depth):
-    if depth == target:
-        record()
-        return
-    for index, choice in enumerate(choices):
-        if used[index]:
-            continue
-        used[index] = True
-        search(depth + 1)
-        used[index] = False`,
-    javascript: `function search(depth) {
-  if (depth === target) return record();
-  for (const [index, choice] of choices.entries()) {
-    if (used[index]) continue;
-    used[index] = true;
-    search(depth + 1);
-    used[index] = false;
-  }
-}`,
     problems: [
       { name: "LeetCode — Subsets", difficulty: "Medium", url: "https://leetcode.com/problems/subsets/", relation: "direct" },
       { name: "LeetCode — Permutations", difficulty: "Medium", url: "https://leetcode.com/problems/permutations/", relation: "direct" },
@@ -135,20 +97,6 @@ while (head < queue.length) {
     complexity: "정렬이 지배하면 O(N log N)",
     complexityNotes: ["제자리 정렬은 입력 순서를 바꾸므로 원본이 필요하면 복사본을 정렬합니다."],
     mistake: "예제에서 잘 된다는 이유만으로 그리디를 확정하지 말고, 반례 또는 교환 논법을 확인하세요.",
-    python: `items.sort(key=lambda item: (item.end, item.start))
-last_end = float("-inf")
-for item in items:
-    if item.start >= last_end:
-        choose(item)
-        last_end = item.end`,
-    javascript: `items.sort((a, b) => a.end - b.end || a.start - b.start);
-let lastEnd = -Infinity;
-for (const item of items) {
-  if (item.start >= lastEnd) {
-    choose(item);
-    lastEnd = item.end;
-  }
-}`,
     problems: [
       { name: "LeetCode — Best Time to Buy and Sell Stock", difficulty: "Easy", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", relation: "variant", note: "지금까지의 최소 가격을 유지하는 불변식을 사용합니다." },
       { name: "LeetCode — Jump Game", difficulty: "Medium", url: "https://leetcode.com/problems/jump-game/", relation: "variant", note: "도달 가능한 가장 먼 위치를 유지하는 그리디입니다." },
@@ -168,20 +116,6 @@ for (const item of items) {
     complexity: "값 조회 O(log N), 답 탐색 O(C · log R)",
     complexityNotes: ["C는 판정 함수 한 번의 비용, R은 가능한 답의 범위입니다. 조건을 만족하는 값이 없으면 lower bound는 len(values)를 반환합니다."],
     mistake: "구간의 포함 여부와 mid 갱신 규칙을 섞지 말고 하나의 템플릿을 일관되게 사용하세요.",
-    python: `left, right = 0, len(values)
-while left < right:
-    mid = (left + right) // 2
-    if values[mid] < target:
-        left = mid + 1
-    else:
-        right = mid`,
-    javascript: `let left = 0;
-let right = values.length;
-while (left < right) {
-  const mid = Math.floor((left + right) / 2);
-  if (values[mid] < target) left = mid + 1;
-  else right = mid;
-}`,
     problems: [
       { name: "LeetCode — Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", relation: "direct" },
       { name: "LeetCode — Search Insert Position", difficulty: "Easy", url: "https://leetcode.com/problems/search-insert-position/", relation: "direct" },
@@ -201,19 +135,6 @@ while (left < right) {
     complexity: "두 포인터가 각각 최대 N번 이동하면 O(N), 보조 공간 O(1) 또는 빈도표 크기",
     complexityNotes: ["정렬된 배열의 양끝 포인터와 원래 순서의 슬라이딩 윈도우는 서로 다른 전제 조건을 사용합니다."],
     mistake: "정렬이 필요한 문제인지, 원래 순서의 연속 구간을 다루는 문제인지 구분하세요.",
-    python: `left = 0
-current = 0
-for right, value in enumerate(values):
-    current += value
-    while should_shrink(current):
-        current -= values[left]
-        left += 1`,
-    javascript: `let left = 0;
-let current = 0;
-for (let right = 0; right < values.length; right++) {
-  current += values[right];
-  while (shouldShrink(current)) current -= values[left++];
-}`,
     problems: [
       { name: "LeetCode — Valid Palindrome", difficulty: "Easy", url: "https://leetcode.com/problems/valid-palindrome/", relation: "direct" },
       { name: "LeetCode — Two Sum II", difficulty: "Medium", url: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/", relation: "direct" },
@@ -233,28 +154,6 @@ for (let right = 0; right < values.length; right++) {
     complexity: "O(V + E), 격자는 O(행 × 열)",
     complexityNotes: ["방문 배열·집합과 큐/스택에 O(V), 격자에서는 O(행 × 열) 보조 공간이 들 수 있습니다."],
     mistake: "BFS에서 큐에서 꺼낼 때 방문 처리하면 같은 노드가 여러 번 들어갈 수 있습니다.",
-    python: `from collections import deque
-
-queue = deque([start])
-visited[start] = True
-while queue:
-    current = queue.popleft()
-    for nxt in graph[current]:
-        if not visited[nxt]:
-            visited[nxt] = True
-            queue.append(nxt)`,
-    javascript: `const queue = [start];
-let head = 0;
-visited[start] = true;
-while (head < queue.length) {
-  const current = queue[head++];
-  for (const next of graph[current]) {
-    if (!visited[next]) {
-      visited[next] = true;
-      queue.push(next);
-    }
-  }
-}`,
     problems: [
       { name: "LeetCode — Flood Fill", difficulty: "Easy", url: "https://leetcode.com/problems/flood-fill/", relation: "direct" },
       { name: "LeetCode — Number of Islands", difficulty: "Medium", url: "https://leetcode.com/problems/number-of-islands/", relation: "direct" },
@@ -274,15 +173,6 @@ while (head < queue.length) {
     complexity: "상태 수 × 상태당 전이 수",
     complexityNotes: ["표 전체가 필요하지 않으면 이전 상태만 보존해 보조 공간을 줄일 수 있습니다."],
     mistake: "점화식보다 먼저 배열부터 만들지 말고, dp[i]가 정확히 무엇인지 한 문장으로 정의하세요.",
-    python: `dp = [0] * (n + 1)
-dp[0] = base
-for i in range(1, n + 1):
-    dp[i] = transition(dp, i)`,
-    javascript: `const dp = Array(n + 1).fill(0);
-dp[0] = base;
-for (let i = 1; i <= n; i++) {
-  dp[i] = transition(dp, i);
-}`,
     problems: [
       { name: "LeetCode — Climbing Stairs", difficulty: "Easy", url: "https://leetcode.com/problems/climbing-stairs/", relation: "direct" },
       { name: "LeetCode — House Robber", difficulty: "Medium", url: "https://leetcode.com/problems/house-robber/", relation: "direct" },
@@ -302,33 +192,6 @@ for (let i = 1; i <= n; i++) {
     complexity: "인접 리스트 + 이진 최소 힙 기준 O((V + E) log V), 공간 O(V + E)",
     complexityNotes: ["heap은 push([비용, 노드]), popMin(), isEmpty() 계약을 제공해야 합니다."],
     mistake: "우선순위 큐에 같은 노드가 여러 번 들어갈 수 있으므로 꺼낸 거리와 최신 거리를 비교하세요.",
-    python: `import heapq
-
-dist[start] = 0
-heap = [(0, start)]
-while heap:
-    cost, node = heapq.heappop(heap)
-    if cost != dist[node]:
-        continue
-    for nxt, weight in graph[node]:
-        new_cost = cost + weight
-        if new_cost < dist[nxt]:
-            dist[nxt] = new_cost
-            heapq.heappush(heap, (new_cost, nxt))`,
-    javascript: `// heap.popMin()은 비용이 가장 작은 [cost, node]를 반환합니다.
-dist[start] = 0;
-heap.push([0, start]);
-while (!heap.isEmpty()) {
-  const [cost, node] = heap.popMin();
-  if (cost !== dist[node]) continue;
-  for (const [next, weight] of graph[node]) {
-    const nextCost = cost + weight;
-    if (nextCost < dist[next]) {
-      dist[next] = nextCost;
-      heap.push([nextCost, next]);
-    }
-  }
-}`,
     problems: [
       { name: "LeetCode — Network Delay Time", difficulty: "Medium", url: "https://leetcode.com/problems/network-delay-time/", relation: "direct" },
       { name: "LeetCode — Cheapest Flights Within K Stops", difficulty: "Medium", url: "https://leetcode.com/problems/cheapest-flights-within-k-stops/", relation: "variant", note: "노드와 사용한 간선 수를 함께 상태로 두거나 Bellman–Ford식 DP를 사용합니다." },
@@ -348,40 +211,6 @@ while (!heap.isEmpty()) {
     complexity: "경로 압축 + 크기 기준 union은 연산당 분할상환 O(α(N)), 크루스칼 O(E log E)",
     complexityNotes: ["α(N)은 역 아커만 함수로 현실적인 입력에서 매우 작습니다. 제자리 간선 정렬은 입력 순서를 바꿉니다."],
     mistake: "union에서 노드 자체가 아니라 각 노드의 대표 루트를 연결해야 합니다.",
-    python: `parent = list(range(n))
-size = [1] * n
-
-def find(x):
-    if parent[x] != x:
-        parent[x] = find(parent[x])
-    return parent[x]
-
-def union(a, b):
-    a, b = find(a), find(b)
-    if a == b:
-        return False
-    if size[a] < size[b]:
-        a, b = b, a
-    parent[b] = a
-    size[a] += size[b]
-    return True`,
-    javascript: `const parent = Array.from({ length: n }, (_, i) => i);
-const size = Array(n).fill(1);
-
-function find(x) {
-  if (parent[x] !== x) parent[x] = find(parent[x]);
-  return parent[x];
-}
-
-function union(a, b) {
-  a = find(a);
-  b = find(b);
-  if (a === b) return false;
-  if (size[a] < size[b]) [a, b] = [b, a];
-  parent[b] = a;
-  size[a] += size[b];
-  return true;
-}`,
     problems: [
       { name: "LeetCode — Number of Provinces", difficulty: "Medium", url: "https://leetcode.com/problems/number-of-provinces/", relation: "direct" },
       { name: "LeetCode — Redundant Connection", difficulty: "Medium", url: "https://leetcode.com/problems/redundant-connection/", relation: "direct" },

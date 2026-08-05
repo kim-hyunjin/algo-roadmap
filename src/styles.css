@@ -1983,10 +1983,6 @@ footer small {
   margin-top: 0.65rem !important;
 }
 
-.template-note {
-  margin: 0 0 0.65rem;
-}
-
 .cs-outcome strong {
   color: var(--ink);
 }
