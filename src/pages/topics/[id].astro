@@ -1,5 +1,6 @@
 ---
 import TopicDetail from "../../components/TopicDetail.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 import { topics, type Topic } from "../../data/topics";
 import "../../styles.css";
 
@@ -29,6 +30,12 @@ const csUrl = `${homeUrl}cs/`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={`${topic.title} 대표 문제와 단계별 풀이, 코드 템플릿을 확인하세요.`} />
     <title>{topic.title} 대표 문제 | Algo Roadmap</title>
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("algo-roadmap-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#topic-content">상세 풀이로 건너뛰기</a>
@@ -38,11 +45,14 @@ const csUrl = `${homeUrl}cs/`;
         <span class="brand-mark" aria-hidden="true">A</span>
         <span>Algo Roadmap</span>
       </a>
-      <nav aria-label="주요 메뉴">
-        <a href={topicsUrl}>유형 학습</a>
-        <a href={routeUrl}>추천 순서</a>
-        <a href={csUrl}>CS 기본기</a>
-      </nav>
+      <div class="header-actions">
+        <nav aria-label="주요 메뉴">
+          <a href={topicsUrl}>유형 학습</a>
+          <a href={routeUrl}>추천 순서</a>
+          <a href={csUrl}>CS 기본기</a>
+        </nav>
+        <ThemeToggle />
+      </div>
     </header>
 
     <main id="topic-content" class="detail-page">
