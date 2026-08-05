@@ -22,17 +22,17 @@
       <label>
         <input type="radio" name="site-theme" value="retro" />
         <span class="theme-swatch swatch-retro" aria-hidden="true"></span>
-        <span><b>옛날 웹</b><small>클래식한 90년대 웹 스타일</small></span>
+        <span><b>옛날 웹</b></span>
       </label>
       <label>
         <input type="radio" name="site-theme" value="original" />
         <span class="theme-swatch swatch-original" aria-hidden="true"></span>
-        <span><b>오리지널</b><small>베이지·네이비·라임 포인트</small></span>
+        <span><b>에디토리얼</b></span>
       </label>
       <label>
         <input type="radio" name="site-theme" value="mono" />
         <span class="theme-swatch swatch-mono" aria-hidden="true"></span>
-        <span><b>모노크롬</b><small>부드러운 차콜·오프화이트</small></span>
+        <span><b>모노크롬</b></span>
       </label>
     </fieldset>
 
@@ -50,7 +50,7 @@
   const themeMedia = window.matchMedia("(prefers-color-scheme: dark)");
   const styleNames: Record<string, string> = {
     retro: "옛날 웹",
-    original: "오리지널",
+    original: "에디토리얼",
     mono: "모노크롬",
   };
 

@@ -320,8 +320,7 @@ nav {
   font-size: 0.95rem;
 }
 
-.theme-panel-heading small,
-.theme-style-options label small {
+.theme-panel-heading small {
   color: var(--muted);
   font-size: 0.68rem;
 }
