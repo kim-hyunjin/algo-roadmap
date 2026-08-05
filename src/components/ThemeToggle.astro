@@ -1,44 +1,111 @@
-<button
-  class="theme-toggle"
-  type="button"
-  aria-label="다크 테마로 전환"
-  aria-pressed="false"
-  title="다크 테마로 전환"
->
-  <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="3.5"></circle>
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path>
-  </svg>
-  <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M20 15.1A8.5 8.5 0 0 1 8.9 4 8.5 8.5 0 1 0 20 15.1Z"></path>
-  </svg>
-  <span class="visually-hidden">테마 전환</span>
-</button>
+<details class="theme-picker">
+  <summary class="theme-picker-trigger" aria-label="테마 설정 열기" title="테마 설정">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3a9 9 0 1 0 0 18h1.2a1.8 1.8 0 0 0 0-3.6h-.7a1.5 1.5 0 0 1 0-3h2.2A6.3 6.3 0 0 0 21 8.1C21 5.3 17 3 12 3Z"></path>
+      <circle cx="7.5" cy="10" r="1"></circle>
+      <circle cx="10" cy="6.8" r="1"></circle>
+      <circle cx="14.2" cy="6.5" r="1"></circle>
+      <circle cx="17.2" cy="9.2" r="1"></circle>
+    </svg>
+    <span class="theme-current">옛날 웹</span>
+    <span class="visually-hidden">테마 선택</span>
+  </summary>
+
+  <div class="theme-panel">
+    <div class="theme-panel-heading">
+      <strong>화면 테마</strong>
+      <small>선택은 이 브라우저에 저장됩니다.</small>
+    </div>
+
+    <fieldset class="theme-style-options">
+      <legend>디자인</legend>
+      <label>
+        <input type="radio" name="site-theme" value="retro" />
+        <span class="theme-swatch swatch-retro" aria-hidden="true"></span>
+        <span><b>옛날 웹</b><small>클래식한 90년대 웹 스타일</small></span>
+      </label>
+      <label>
+        <input type="radio" name="site-theme" value="original" />
+        <span class="theme-swatch swatch-original" aria-hidden="true"></span>
+        <span><b>오리지널</b><small>베이지·네이비·라임 포인트</small></span>
+      </label>
+      <label>
+        <input type="radio" name="site-theme" value="mono" />
+        <span class="theme-swatch swatch-mono" aria-hidden="true"></span>
+        <span><b>모노크롬</b><small>부드러운 차콜·오프화이트</small></span>
+      </label>
+    </fieldset>
+
+    <fieldset class="theme-mode-options">
+      <legend>밝기</legend>
+      <label><input type="radio" name="theme-mode" value="light" /><span>☀ 라이트</span></label>
+      <label><input type="radio" name="theme-mode" value="dark" /><span>☾ 다크</span></label>
+    </fieldset>
+  </div>
+</details>
 
 <script>
-  const themeToggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
+  const themePicker = document.querySelector<HTMLDetailsElement>(".theme-picker");
   const themeRoot = document.documentElement;
   const themeMedia = window.matchMedia("(prefers-color-scheme: dark)");
-
-  const currentTheme = () =>
-    themeRoot.dataset.theme ?? (themeMedia.matches ? "dark" : "light");
-
-  const updateThemeButton = () => {
-    if (!themeToggle) return;
-    const isDark = currentTheme() === "dark";
-    const nextTheme = isDark ? "라이트" : "다크";
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-    themeToggle.setAttribute("aria-label", `${nextTheme} 테마로 전환`);
-    themeToggle.title = `${nextTheme} 테마로 전환`;
+  const styleNames: Record<string, string> = {
+    retro: "옛날 웹",
+    original: "오리지널",
+    mono: "모노크롬",
   };
 
-  themeToggle?.addEventListener("click", () => {
-    const nextTheme = currentTheme() === "dark" ? "light" : "dark";
-    themeRoot.dataset.theme = nextTheme;
-    localStorage.setItem("algo-roadmap-theme", nextTheme);
-    updateThemeButton();
+  const updateThemeControls = () => {
+    if (!themePicker) return;
+    const style = themeRoot.dataset.style ?? "retro";
+    const mode = themeRoot.dataset.theme ?? (themeMedia.matches ? "dark" : "light");
+    const currentLabel = themePicker.querySelector<HTMLElement>(".theme-current");
+    if (currentLabel) currentLabel.textContent = styleNames[style] ?? styleNames.retro;
+
+    themePicker.querySelectorAll<HTMLInputElement>('input[name="site-theme"]').forEach((input) => {
+      input.checked = input.value === style;
+    });
+    themePicker.querySelectorAll<HTMLInputElement>('input[name="theme-mode"]').forEach((input) => {
+      input.checked = input.value === mode;
+    });
+  };
+
+  themePicker?.querySelectorAll<HTMLInputElement>('input[name="site-theme"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      if (!input.checked) return;
+      themeRoot.dataset.style = input.value;
+      localStorage.setItem("algo-roadmap-style", input.value);
+      updateThemeControls();
+    });
   });
 
-  themeMedia.addEventListener("change", updateThemeButton);
-  updateThemeButton();
+  themePicker?.querySelectorAll<HTMLInputElement>('input[name="theme-mode"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      if (!input.checked) return;
+      themeRoot.dataset.theme = input.value;
+      localStorage.setItem("algo-roadmap-mode", input.value);
+      localStorage.removeItem("algo-roadmap-theme");
+      updateThemeControls();
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (themePicker?.open && event.target instanceof Node && !themePicker.contains(event.target)) {
+      themePicker.open = false;
+    }
+  });
+
+  themePicker?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      themePicker.open = false;
+      themePicker.querySelector<HTMLElement>("summary")?.focus();
+    }
+  });
+
+  themeMedia.addEventListener("change", (event) => {
+    if (localStorage.getItem("algo-roadmap-mode")) return;
+    themeRoot.dataset.theme = event.matches ? "dark" : "light";
+    updateThemeControls();
+  });
+
+  updateThemeControls();
 </script>

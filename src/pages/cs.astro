@@ -20,8 +20,13 @@ const csUrl = `${baseUrl}cs/`;
     <title>CS Foundations — AI 시대의 기본기 | Algo Roadmap</title>
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem("algo-roadmap-theme");
-        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+        const styles = ["retro", "original", "mono"];
+        const savedStyle = localStorage.getItem("algo-roadmap-style");
+        const savedMode = localStorage.getItem("algo-roadmap-mode") ?? localStorage.getItem("algo-roadmap-theme");
+        document.documentElement.dataset.style = styles.includes(savedStyle) ? savedStyle : "retro";
+        document.documentElement.dataset.theme = savedMode === "light" || savedMode === "dark"
+          ? savedMode
+          : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       })();
     </script>
   </head>
