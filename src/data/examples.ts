@@ -40,6 +40,7 @@ export interface RepresentativeExample {
   }>;
   python: string;
   javascript: string;
+  cpp: string;
   visualizationLabel: string;
   frames: VisualFrame[];
 }
@@ -76,6 +77,19 @@ export const examples: Record<string, RepresentativeExample> = {
     seen.set(nums[index], index);
   }
   return [];
+}`,
+    cpp: `#include <unordered_map>
+#include <vector>
+
+std::vector<int> twoSum(const std::vector<int>& nums, int target) {
+  std::unordered_map<int, int> seen;
+  for (int index = 0; index < static_cast<int>(nums.size()); ++index) {
+    int need = target - nums[index];
+    auto found = seen.find(need);
+    if (found != seen.end()) return {found->second, index};
+    seen[nums[index]] = index;
+  }
+  return {};
 }`,
     visualizationLabel: "해시를 이용해 두 수의 합을 찾는 과정",
     frames: [
@@ -132,6 +146,26 @@ export const examples: Record<string, RepresentativeExample> = {
   }
   return stack.length === 0;
 }`,
+    cpp: `#include <stack>
+#include <string>
+#include <unordered_map>
+
+bool isValid(const std::string& s) {
+  const std::unordered_map<char, char> pairs = {
+    {')', '('}, {'}', '{'}, {']', '['}
+  };
+  std::stack<char> stack;
+  for (char ch : s) {
+    auto found = pairs.find(ch);
+    if (found == pairs.end()) {
+      stack.push(ch);
+    } else {
+      if (stack.empty() || stack.top() != found->second) return false;
+      stack.pop();
+    }
+  }
+  return stack.empty();
+}`,
     visualizationLabel: "스택에 괄호를 넣고 빼는 과정",
     frames: [
       { title: "여는 괄호를 쌓습니다", description: "(, {, [가 차례로 들어오므로 스택 위에 계속 쌓습니다.", rows: [{ label: "입력", cells: [{ value: "(", state: "visited" }, { value: "{", state: "visited" }, { value: "[", state: "active" }, "]", "}", ")"] }, { label: "stack", cells: ["(", "{", { value: "[ ← top", state: "active" }] }] },
@@ -179,6 +213,26 @@ export const examples: Record<string, RepresentativeExample> = {
   search(0);
   return answer;
 }`,
+    cpp: `#include <vector>
+
+std::vector<std::vector<int>> subsets(const std::vector<int>& nums) {
+  std::vector<std::vector<int>> answer;
+  std::vector<int> path;
+
+  auto search = [&](auto&& self, int index) -> void {
+    if (index == static_cast<int>(nums.size())) {
+      answer.push_back(path);
+      return;
+    }
+    path.push_back(nums[index]);
+    self(self, index + 1);
+    path.pop_back();
+    self(self, index + 1);
+  };
+
+  search(search, 0);
+  return answer;
+}`,
     visualizationLabel: "부분집합 탐색 트리에서 선택하고 되돌리는 과정",
     frames: [
       { title: "1을 선택합니다", description: "첫 갈래에서 1을 path에 넣고 다음 숫자 2로 내려갑니다.", rows: [{ label: "결정", cells: [{ value: "1 선택", state: "active" }, "2 ?", "3 ?"] }, { label: "path", cells: [{ value: "[1]", state: "candidate" }] }] },
@@ -222,6 +276,26 @@ export const examples: Record<string, RepresentativeExample> = {
   }
   return chosen;
 }`,
+    cpp: `#include <algorithm>
+#include <limits>
+#include <utility>
+#include <vector>
+
+std::vector<std::pair<int, int>> maxMeetings(
+    std::vector<std::pair<int, int>> meetings) {
+  std::sort(meetings.begin(), meetings.end(), [](const auto& a, const auto& b) {
+    return a.second < b.second;
+  });
+  std::vector<std::pair<int, int>> chosen;
+  int lastEnd = std::numeric_limits<int>::min();
+  for (const auto& [start, end] : meetings) {
+    if (start >= lastEnd) {
+      chosen.push_back({start, end});
+      lastEnd = end;
+    }
+  }
+  return chosen;
+}`,
     visualizationLabel: "종료 시간순으로 회의를 선택하는 과정",
     frames: [
       { title: "가장 빨리 끝나는 회의 선택", description: "(1,3)을 선택하고 lastEnd를 3으로 둡니다.", rows: [{ label: "회의", cells: [{ value: "1─3", state: "success" }, "2──5", "4─6", "6─7"] }, { label: "lastEnd", cells: [{ value: "3", state: "active" }] }] },
@@ -257,6 +331,18 @@ export const examples: Record<string, RepresentativeExample> = {
   let left = 0, right = values.length;
   while (left < right) {
     const mid = Math.floor((left + right) / 2);
+    if (values[mid] < target) left = mid + 1;
+    else right = mid;
+  }
+  return left;
+}`,
+    cpp: `#include <vector>
+
+int lowerBound(const std::vector<int>& values, int target) {
+  int left = 0;
+  int right = static_cast<int>(values.size());
+  while (left < right) {
+    int mid = left + (right - left) / 2;
     if (values[mid] < target) left = mid + 1;
     else right = mid;
   }
@@ -304,6 +390,23 @@ export const examples: Record<string, RepresentativeExample> = {
     }
   }
   return answer === Infinity ? 0 : answer;
+}`,
+    cpp: `#include <algorithm>
+#include <limits>
+#include <vector>
+
+int minSubarrayLen(const std::vector<int>& nums, int target) {
+  int left = 0;
+  int sum = 0;
+  int answer = std::numeric_limits<int>::max();
+  for (int right = 0; right < static_cast<int>(nums.size()); ++right) {
+    sum += nums[right];
+    while (sum >= target) {
+      answer = std::min(answer, right - left + 1);
+      sum -= nums[left++];
+    }
+  }
+  return answer == std::numeric_limits<int>::max() ? 0 : answer;
 }`,
     visualizationLabel: "슬라이딩 윈도우의 양쪽 경계가 이동하는 과정",
     frames: [
@@ -360,6 +463,38 @@ def shortest_path(grid, start, goal):
   }
   return -1;
 }`,
+    cpp: `#include <queue>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+int shortestPath(const std::vector<std::vector<int>>& grid,
+                 std::pair<int, int> start,
+                 std::pair<int, int> goal) {
+  const int rows = static_cast<int>(grid.size());
+  const int cols = static_cast<int>(grid[0].size());
+  const int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+  std::vector<std::vector<bool>> visited(rows, std::vector<bool>(cols));
+  std::queue<std::tuple<int, int, int>> queue;
+  queue.push({start.first, start.second, 0});
+  visited[start.first][start.second] = true;
+
+  while (!queue.empty()) {
+    auto [row, col, distance] = queue.front();
+    queue.pop();
+    if (std::pair{row, col} == goal) return distance;
+    for (const auto& direction : directions) {
+      int nextRow = row + direction[0];
+      int nextCol = col + direction[1];
+      if (0 <= nextRow && nextRow < rows && 0 <= nextCol && nextCol < cols &&
+          grid[nextRow][nextCol] == 0 && !visited[nextRow][nextCol]) {
+        visited[nextRow][nextCol] = true;
+        queue.push({nextRow, nextCol, distance + 1});
+      }
+    }
+  }
+  return -1;
+}`,
     visualizationLabel: "BFS가 격자의 가까운 칸부터 방문하는 과정",
     frames: [
       { title: "거리 0: 시작점", description: "S를 방문 표시하고 큐에 넣습니다.", rows: [{ label: "0", cells: [{ value: "S·0", state: "active" }, "·", { value: "■", state: "blocked" }] }, { label: "1", cells: [{ value: "■", state: "blocked" }, "·", "·"] }, { label: "2", cells: ["·", "·", "G"] }, { label: "queue", cells: [{ value: "S", state: "active" }] }] },
@@ -396,6 +531,17 @@ def shortest_path(grid, start, goal):
   const dp = Array(n + 1).fill(0);
   dp[0] = dp[1] = 1;
   for (let stair = 2; stair <= n; stair++) {
+    dp[stair] = dp[stair - 1] + dp[stair - 2];
+  }
+  return dp[n];
+}`,
+    cpp: `#include <vector>
+
+long long climbStairs(int n) {
+  if (n <= 1) return 1;
+  std::vector<long long> dp(n + 1);
+  dp[0] = dp[1] = 1;
+  for (int stair = 2; stair <= n; ++stair) {
     dp[stair] = dp[stair - 1] + dp[stair - 2];
   }
   return dp[n];
@@ -451,6 +597,38 @@ def dijkstra(graph, start):
       if (nextCost < dist[next]) {
         dist[next] = nextCost;
         heap.push([nextCost, next]);
+      }
+    }
+  }
+  return dist;
+}`,
+    cpp: `#include <functional>
+#include <limits>
+#include <queue>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+using Graph = std::unordered_map<char, std::vector<std::pair<char, int>>>;
+
+std::unordered_map<char, int> dijkstra(const Graph& graph, char start) {
+  const int infinity = std::numeric_limits<int>::max();
+  std::unordered_map<char, int> dist;
+  for (const auto& [node, edges] : graph) dist[node] = infinity;
+  dist[start] = 0;
+
+  using State = std::pair<int, char>;
+  std::priority_queue<State, std::vector<State>, std::greater<State>> heap;
+  heap.push({0, start});
+  while (!heap.empty()) {
+    auto [cost, node] = heap.top();
+    heap.pop();
+    if (cost != dist[node]) continue;
+    for (const auto& [next, weight] : graph.at(node)) {
+      int nextCost = cost + weight;
+      if (nextCost < dist[next]) {
+        dist[next] = nextCost;
+        heap.push({nextCost, next});
       }
     }
   }
@@ -522,6 +700,47 @@ def dijkstra(graph, start):
   }
   if (chosen.length !== nodes.length - 1) throw new Error("graph is disconnected");
   return { chosen, cost };
+}`,
+    cpp: `#include <algorithm>
+#include <stdexcept>
+#include <tuple>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+std::pair<std::vector<std::pair<char, char>>, int> kruskal(
+    const std::vector<char>& nodes,
+    std::vector<std::tuple<int, char, char>> edges) {
+  if (nodes.empty()) return {{}, 0};
+  std::unordered_map<char, char> parent;
+  std::unordered_map<char, int> size;
+  for (char node : nodes) {
+    parent[node] = node;
+    size[node] = 1;
+  }
+  auto find = [&](auto&& self, char node) -> char {
+    if (parent[node] != node) parent[node] = self(self, parent[node]);
+    return parent[node];
+  };
+
+  std::sort(edges.begin(), edges.end());
+  std::vector<std::pair<char, char>> chosen;
+  int cost = 0;
+  for (const auto& [weight, a, b] : edges) {
+    char rootA = find(find, a);
+    char rootB = find(find, b);
+    if (rootA == rootB) continue;
+    if (size[rootA] < size[rootB]) std::swap(rootA, rootB);
+    parent[rootB] = rootA;
+    size[rootA] += size[rootB];
+    chosen.push_back({a, b});
+    cost += weight;
+    if (chosen.size() == nodes.size() - 1) break;
+  }
+  if (chosen.size() != nodes.size() - 1) {
+    throw std::invalid_argument("graph is disconnected");
+  }
+  return {chosen, cost};
 }`,
     visualizationLabel: "크루스칼 알고리즘이 간선을 선택하고 집합을 합치는 과정",
     frames: [
