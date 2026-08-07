@@ -94,32 +94,58 @@ const getState = (cell: VisualCell) =>
   </div>
 
   <div class="detail-block example-code" data-code-tabs>
-    <h5>이 문제의 전체 코드</h5>
-    <div class="code-tabs" role="tablist" aria-label={`${example.title} 풀이 언어`}>
-      <button
-        class="code-tab active"
-        type="button"
-        role="tab"
-        aria-selected="true"
-        data-language="python"
-      >Python</button>
-      <button
-        class="code-tab"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        data-language="javascript"
-      >JavaScript</button>
-      <button
-        class="code-tab"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        data-language="cpp"
-      >C++</button>
+    <div class="code-heading">
+      <div>
+        <h5>이 문제의 전체 코드</h5>
+        <p>언어를 바꿔가며 풀이를 비교해 보세요.</p>
+      </div>
+      <button class="code-copy" type="button" data-copy-code aria-label="현재 풀이 코드 복사">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+        </svg>
+        <span>코드 복사</span>
+      </button>
     </div>
-    <pre data-code-language="python"><code>{example.python}</code></pre>
-    <pre data-code-language="javascript" hidden><code>{example.javascript}</code></pre>
-    <pre data-code-language="cpp" hidden><code>{example.cpp}</code></pre>
+    <div class="code-editor-shell">
+      <div class="code-tabs" role="tablist" aria-label={`${example.title} 풀이 언어`}>
+        <button
+          class="code-tab active"
+          type="button"
+          role="tab"
+          aria-selected="true"
+          tabindex="0"
+          data-language="python"
+        >Python</button>
+        <button
+          class="code-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          data-language="javascript"
+        >JavaScript</button>
+        <button
+          class="code-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          data-language="cpp"
+        >C++</button>
+      </div>
+      <div
+        class="monaco-editor-host"
+        data-code-editor
+        role="region"
+        aria-label={`${example.title} Python 풀이 코드`}
+      ></div>
+      <div class="code-fallback" data-code-fallback>
+        <pre data-code-language="python"><code>{example.python}</code></pre>
+        <pre data-code-language="javascript" hidden><code>{example.javascript}</code></pre>
+        <pre data-code-language="cpp" hidden><code>{example.cpp}</code></pre>
+      </div>
+    </div>
+    <p class="code-copy-status visually-hidden" data-copy-status aria-live="polite"></p>
   </div>
 </section>

@@ -1181,6 +1181,76 @@ h1 em {
   margin-top: 1.5rem;
 }
 
+.code-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.code-heading p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.code-copy {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.4rem;
+  padding: 0.45rem 0.7rem;
+  color: var(--ink);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.code-copy:hover {
+  color: var(--on-action);
+  background: var(--action);
+  border-color: var(--action);
+}
+
+.code-copy:focus-visible,
+.code-tab:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.code-copy svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.code-editor-shell {
+  overflow: hidden;
+  background: #1e1e1e;
+  border: 1px solid var(--line-strong);
+}
+
+.monaco-editor-host {
+  display: none;
+  width: 100%;
+  min-height: 280px;
+}
+
+.is-monaco-ready .monaco-editor-host {
+  display: block;
+}
+
+.is-monaco-ready .code-fallback {
+  display: none;
+}
+
 .detail-block {
   margin-top: 1.2rem;
 }
@@ -1245,24 +1315,45 @@ pre {
 
 .code-tabs {
   display: flex;
-  gap: 0.3rem;
-  margin-bottom: 0.4rem;
+  gap: 0;
+  margin: 0;
+  padding: 0 0.45rem;
+  overflow-x: auto;
+  background: #181818;
+  border-bottom: 1px solid #3c3c3c;
 }
 
 .code-tab {
-  padding: 0.35rem 0.6rem;
-  color: var(--muted);
+  position: relative;
+  padding: 0.7rem 0.85rem 0.65rem;
+  color: #a8a8a8;
   background: transparent;
-  border: 1px solid var(--line);
+  border: 0;
+  border-right: 1px solid #333333;
   cursor: pointer;
   font-size: 0.72rem;
   font-weight: 800;
 }
 
 .code-tab.active {
-  color: white;
-  background: var(--navy);
-  border-color: var(--navy);
+  color: #ffffff;
+  background: #1e1e1e;
+}
+
+.code-tab.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: #4daafc;
+  content: "";
+}
+
+.code-fallback pre {
+  min-height: 280px;
+  color: #d4d4d4;
+  background: #1e1e1e;
 }
 
 .problem-list {
@@ -1500,6 +1591,18 @@ footer small {
 
   .example-io {
     grid-template-columns: 1fr;
+  }
+
+  .code-heading {
+    align-items: flex-start;
+  }
+
+  .code-copy {
+    padding-inline: 0.55rem;
+  }
+
+  .code-tabs {
+    padding-inline: 0;
   }
 
   .problem-list a {
@@ -2465,7 +2568,6 @@ footer small {
 .visual-controls button:hover:not(:disabled),
 .visual-copy,
 .visual-cell[data-state="active"],
-.code-tab.active,
 .cs-primary,
 .cs-system-map,
 .cs-path a:hover,
@@ -2484,7 +2586,6 @@ footer small {
 .topic-page-header,
 .visual-controls button:hover:not(:disabled),
 .visual-copy,
-.code-tab.active,
 .cs-primary,
 .cs-system-map,
 .cs-path a:hover,
@@ -2667,7 +2768,6 @@ footer small {
 :root[data-style="retro"] .button,
 :root[data-style="retro"] .filter,
 :root[data-style="retro"] .visual-controls button,
-:root[data-style="retro"] .code-tab,
 :root[data-style="retro"] .theme-picker-trigger,
 :root[data-style="retro"] .theme-mode-options span {
   border-width: 2px;
