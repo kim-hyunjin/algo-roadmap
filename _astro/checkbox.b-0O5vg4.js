@@ -1,0 +1,1 @@
+import"./chunk-5B5GAF2Q.RLy_oCRS.js";import{t as e}from"./chunk-PSY6LVTJ.CeR5yMJ0.js";import{n as t}from"./_id_.astro_astro_type_script_index_0_lang.AvDvLRfN.js";var n=t({createCheckbox:()=>e});export{n as t};
