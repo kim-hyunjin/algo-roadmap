@@ -23,9 +23,9 @@ const csUrl = `${baseUrl}cs/`;
   <SiteHeader page="home" />
 
   <main>
-    <section class="content-shell grid gap-10 py-20 lg:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.7fr)] lg:items-center lg:py-28">
+    <section class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl gap-10 py-20 sm:w-[calc(100%_-_2.5rem)] lg:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.7fr)] lg:items-center lg:py-28">
       <div>
-        <p class="section-kicker">코딩 테스트를 위한 작은 지도</p>
+        <p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">코딩 테스트를 위한 작은 지도</p>
         <h1 class="mt-5 max-w-4xl text-4xl leading-tight font-bold tracking-tight text-balance sm:text-6xl">
           문제를 읽고,<br /><span class="text-primary">풀이 패턴</span>을 떠올리는 힘
         </h1>
@@ -54,7 +54,7 @@ const csUrl = `${baseUrl}cs/`;
     </section>
 
     <section class="border-y border-border bg-muted/45">
-      <div class="content-shell grid divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl divide-y divide-border sm:w-[calc(100%_-_2.5rem)] md:grid-cols-3 md:divide-x md:divide-y-0">
         {[
           ["01", "신호를 찾기", "입력 크기와 문제 표현에서 사용할 수 있는 알고리즘을 좁힙니다."],
           ["02", "말로 먼저 풀기", "코드를 쓰기 전, 상태와 반복 규칙을 한 문장으로 설명합니다."],
@@ -69,10 +69,10 @@ const csUrl = `${baseUrl}cs/`;
       </div>
     </section>
 
-    <section id="topics" class="content-shell scroll-mt-24 py-20">
+    <section id="topics" class="mx-auto w-[calc(100%_-_2rem)] max-w-7xl scroll-mt-24 py-20 sm:w-[calc(100%_-_2.5rem)]">
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p class="section-kicker">Pattern library</p>
+          <p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Pattern library</p>
           <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">대표 문제 유형</h2>
         </div>
         <p class="max-w-xl leading-7 text-muted-foreground">유형을 선택해 대표 문제의 상세 풀이와 실행 과정을 따라가 보세요.</p>
@@ -104,9 +104,9 @@ const csUrl = `${baseUrl}cs/`;
     </section>
 
     <section id="study-route" class="scroll-mt-24 border-y border-border bg-muted/40 py-20">
-      <div class="content-shell">
+      <div class="mx-auto w-[calc(100%_-_2rem)] max-w-7xl sm:w-[calc(100%_-_2.5rem)]">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div><p class="section-kicker">4-week route</p><h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">처음이라면 이 순서로</h2></div>
+          <div><p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">4-week route</p><h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">처음이라면 이 순서로</h2></div>
           <p class="max-w-xl leading-7 text-muted-foreground">주 5일, 하루 60~90분 기준입니다. 매주 마지막 학습일에는 새 유형 대신 오답과 이전 유형을 다시 봅니다.</p>
         </div>
         <ol class="mt-10 grid gap-4 lg:grid-cols-2">

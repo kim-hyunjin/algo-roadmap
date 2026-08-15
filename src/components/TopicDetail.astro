@@ -18,35 +18,35 @@ if (!example) {
 ---
 
 <article class="grid gap-6">
-  <Card class="detail-copy">
+  <Card>
     <CardHeader><CardTitle>이 신호를 찾으세요</CardTitle></CardHeader>
-    <CardContent><ul>{topic.signals.map((item) => <li>{item}</li>)}</ul></CardContent>
+    <CardContent><ul class="mt-4 grid list-disc gap-2.5 pl-[1.35rem]">{topic.signals.map((item) => <li>{item}</li>)}</ul></CardContent>
   </Card>
 
   <div class="grid gap-6 lg:grid-cols-2">
-    <Card class="detail-copy">
+    <Card>
       <CardHeader><CardTitle>적용 조건</CardTitle></CardHeader>
-      <CardContent><ul>{topic.preconditions.map((item) => <li>{item}</li>)}</ul></CardContent>
+      <CardContent><ul class="mt-4 grid list-disc gap-2.5 pl-[1.35rem]">{topic.preconditions.map((item) => <li>{item}</li>)}</ul></CardContent>
     </Card>
-    <Card class="detail-copy border-warning/70 bg-warning/5">
+    <Card class="border-warning/70 bg-warning/5">
       <CardHeader><CardTitle>이 방법이 맞지 않는 경우</CardTitle></CardHeader>
-      <CardContent><ul>{topic.doesNotApply.map((item) => <li>{item}</li>)}</ul></CardContent>
+      <CardContent><ul class="mt-4 grid list-disc gap-2.5 pl-[1.35rem]">{topic.doesNotApply.map((item) => <li>{item}</li>)}</ul></CardContent>
     </Card>
   </div>
 
   <ExampleWalkthrough {example} />
 
   <div class="grid gap-6 lg:grid-cols-2">
-    <Card class="detail-copy">
+    <Card>
       <CardHeader><CardTitle>풀이 순서</CardTitle></CardHeader>
-      <CardContent><ol>{topic.steps.map((item) => <li>{item}</li>)}</ol></CardContent>
+      <CardContent><ol class="mt-4 grid list-decimal gap-2.5 pl-[1.35rem]">{topic.steps.map((item) => <li>{item}</li>)}</ol></CardContent>
     </Card>
-    <Card class="detail-copy">
+    <Card>
       <CardHeader class="flex-row items-center justify-between">
         <CardTitle>복잡도</CardTitle>
         <Badge variant="primary">{topic.complexity}</Badge>
       </CardHeader>
-      <CardContent><ul>{topic.complexityNotes.map((item) => <li>{item}</li>)}</ul></CardContent>
+      <CardContent><ul class="mt-4 grid list-disc gap-2.5 pl-[1.35rem]">{topic.complexityNotes.map((item) => <li>{item}</li>)}</ul></CardContent>
     </Card>
   </div>
 

@@ -70,7 +70,7 @@ function initializeCodeTabs(scope: HTMLElement): void {
     wordWrap: compactEditorMedia.matches ? "on" : "off",
   });
 
-  scope.classList.add("is-monaco-ready");
+  scope.dataset.monacoReady = "true";
 
   const updateEditorHeight = (model: monaco.editor.ITextModel): void => {
     const lineHeight = 21;

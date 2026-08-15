@@ -33,9 +33,9 @@ const weeks = [
   <SiteHeader page="cs" />
 
   <main>
-    <section class="content-shell grid gap-10 py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(340px,0.7fr)] lg:items-center lg:py-28">
+    <section class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl gap-10 py-20 sm:w-[calc(100%_-_2.5rem)] lg:grid-cols-[minmax(0,1.3fr)_minmax(340px,0.7fr)] lg:items-center lg:py-28">
       <div>
-        <p class="section-kicker">Computer science, still essential</p>
+        <p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Computer science, still essential</p>
         <h1 class="mt-5 text-4xl leading-tight font-bold tracking-tight text-balance sm:text-6xl">AI가 코드를 써도,<br /><span class="text-primary">판단은 기본기</span>에서 나옵니다.</h1>
         <p class="mt-6 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">CS는 외울 지식의 목록이 아니라 시스템이 왜 느리고, 틀리고, 멈추고, 위험해지는지 추론하는 도구입니다. 아래 순서대로 개념을 익히고 작은 실습으로 확인하세요.</p>
         <div class="mt-8 flex flex-wrap gap-3">
@@ -46,7 +46,7 @@ const weeks = [
 
       <Card class="border-primary/20 shadow-xl shadow-primary/5">
         <CardHeader>
-          <p class="section-kicker">학습 영역 지도</p>
+          <p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">학습 영역 지도</p>
           <CardTitle class="mt-2">판단과 검증을 위한 6개 영역</CardTitle>
         </CardHeader>
         <CardContent>
@@ -60,7 +60,7 @@ const weeks = [
     </section>
 
     <section class="border-y border-border bg-muted/45">
-      <div class="content-shell grid divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl divide-y divide-border sm:w-[calc(100%_-_2.5rem)] md:grid-cols-3 md:divide-x md:divide-y-0">
         {[
           ["01", "생성보다 검증", "코드는 빨리 만들 수 있어도 정확성·복잡도·보안은 스스로 판단해야 합니다."],
           ["02", "증상보다 원인", "오류 메시지 뒤의 메모리, 네트워크, 동시성 원인을 계층별로 좁힙니다."],
@@ -71,9 +71,9 @@ const weeks = [
       </div>
     </section>
 
-    <section class="content-shell py-16">
+    <section class="mx-auto w-[calc(100%_-_2rem)] max-w-7xl py-16 sm:w-[calc(100%_-_2.5rem)]">
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div><p class="section-kicker">Dependency map</p><h2 class="mt-3 text-3xl font-bold tracking-tight">위에서 아래로 연결하세요</h2></div>
+        <div><p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Dependency map</p><h2 class="mt-3 text-3xl font-bold tracking-tight">위에서 아래로 연결하세요</h2></div>
         <p class="max-w-xl leading-7 text-muted-foreground">앞 영역의 개념이 뒤 영역의 판단 근거가 됩니다. 완벽하게 끝내기보다 한 바퀴 돌고 프로젝트에서 반복하세요.</p>
       </div>
       <div class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
@@ -85,11 +85,11 @@ const weeks = [
       </div>
     </section>
 
-    <div class="content-shell grid gap-8 py-8 lg:grid-cols-[280px_minmax(0,1fr)]">
+    <div class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl gap-8 py-8 sm:w-[calc(100%_-_2.5rem)] lg:grid-cols-[280px_minmax(0,1fr)]">
       <aside class="lg:sticky lg:top-24 lg:h-fit">
         <Card>
           <CardHeader>
-            <p class="section-kicker">Your progress</p>
+            <p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Your progress</p>
             <div class="mt-2 flex items-center justify-between"><CardTitle>학습 현황</CardTitle><strong id="cs-progress-count" class="font-mono text-primary">0 / {conceptCount}</strong></div>
           </CardHeader>
           <CardContent class="space-y-4">
@@ -111,13 +111,13 @@ const weeks = [
           <article id={module.id} class="scroll-mt-24 rounded-2xl border border-border bg-card p-5 sm:p-7">
             <header class="flex gap-4 border-b border-border pb-6">
               <Badge variant="primary" size="lg" class="h-fit">{module.number}</Badge>
-              <div><p class="section-kicker">Foundation module</p><h2 class="mt-2 text-2xl font-bold">{module.title}</h2><p class="mt-2 text-sm leading-6 text-muted-foreground">{module.description}</p></div>
+              <div><p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Foundation module</p><h2 class="mt-2 text-2xl font-bold">{module.title}</h2><p class="mt-2 text-sm leading-6 text-muted-foreground">{module.description}</p></div>
             </header>
             <div class="my-6 rounded-xl bg-primary/5 p-5"><span class="text-xs font-semibold text-primary">이 모듈을 마치면</span><strong class="mt-2 block leading-7">{module.outcome}</strong></div>
 
             <Accordion type="multiple" defaultValue={module.number === "01" ? [module.concepts[0].id] : []} class="grid gap-3">
               {module.concepts.map((concept, conceptIndex) => (
-                <AccordionItem value={concept.id} class="rounded-xl border border-border px-5" data-cs-concept data-completed="false">
+                <AccordionItem value={concept.id} class="rounded-xl border border-border px-5 data-[completed=true]:border-[color-mix(in_oklab,var(--success)_55%,var(--border))]" data-cs-concept data-completed="false">
                   <AccordionTrigger class="gap-4 py-5 hover:no-underline">
                     <span class="font-mono text-xs text-primary">{module.number}.{conceptIndex + 1}</span>
                     <span class="min-w-0 flex-1 text-left"><strong class="block">{concept.title}</strong><small class="mt-1 block font-normal text-muted-foreground">{concept.subtitle}</small></span>
@@ -163,8 +163,8 @@ const weeks = [
     </div>
 
     <section id="study-plan" class="mt-20 scroll-mt-24 border-y border-border bg-muted/40 py-20">
-      <div class="content-shell grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><p class="section-kicker">9-week field guide</p><h2 class="mt-3 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">시간 비중은 읽기 30%,<br />실습 60%, 설명 10%</h2><p class="mt-5 leading-7 text-muted-foreground">하루 60~90분, 주 3회를 기준으로 합니다. 세 번째 학습일에는 이전 주 내용을 3분 설명한 뒤 새 실습을 시작합니다.</p></div>
+      <div class="mx-auto grid w-[calc(100%_-_2rem)] max-w-7xl gap-10 sm:w-[calc(100%_-_2.5rem)] lg:grid-cols-[0.7fr_1.3fr]">
+        <div><p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">9-week field guide</p><h2 class="mt-3 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">시간 비중은 읽기 30%,<br />실습 60%, 설명 10%</h2><p class="mt-5 leading-7 text-muted-foreground">하루 60~90분, 주 3회를 기준으로 합니다. 세 번째 학습일에는 이전 주 내용을 3분 설명한 뒤 새 실습을 시작합니다.</p></div>
         <ol class="grid gap-3">
           {weeks.map(([week, title, practice, done]) => (
             <li class="grid gap-3 rounded-xl border border-border bg-card p-5 sm:grid-cols-[60px_1fr]">
@@ -175,7 +175,7 @@ const weeks = [
       </div>
     </section>
 
-    <section class="content-shell py-20 text-center"><p class="section-kicker">Final check</p><h2 class="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">“설명할 수 있는가?”가<br />진짜 완료 기준입니다.</h2><div class="mt-8 flex flex-wrap justify-center gap-3">{["① 그림 없이 3분 설명", "② 작은 코드로 재현", "③ 실제 장애와 연결"].map((item) => <Badge variant="outline" size="lg">{item}</Badge>)}</div><Button as="a" href="#curriculum" variant="primary" class="mt-8">첫 개념부터 시작하기 ↑</Button></section>
+    <section class="mx-auto w-[calc(100%_-_2rem)] max-w-7xl py-20 text-center sm:w-[calc(100%_-_2.5rem)]"><p class="text-xs font-bold tracking-[0.12em] text-primary-accent uppercase">Final check</p><h2 class="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">“설명할 수 있는가?”가<br />진짜 완료 기준입니다.</h2><div class="mt-8 flex flex-wrap justify-center gap-3">{["① 그림 없이 3분 설명", "② 작은 코드로 재현", "③ 실제 장애와 연결"].map((item) => <Badge variant="outline" size="lg">{item}</Badge>)}</div><Button as="a" href="#curriculum" variant="primary" class="mt-8">첫 개념부터 시작하기 ↑</Button></section>
   </main>
 
   <SiteFooter message="도구는 바뀌어도, 시스템을 보는 눈은 남습니다." note="콘텐츠 마지막 검토: 2026-08-04 · 각 개념의 공식 근거 링크는 본문에 표시했습니다." linkHref={baseUrl} linkLabel="Algo Roadmap 홈으로 →" />
