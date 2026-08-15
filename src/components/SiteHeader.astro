@@ -1,0 +1,41 @@
+---
+import { ThemeToggle } from "@/components/starwind/theme-toggle";
+
+interface Props {
+  page: "home" | "cs" | "detail";
+}
+
+const { page } = Astro.props;
+const homeUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const topicsUrl = `${homeUrl}#topics`;
+const routeUrl = `${homeUrl}#study-route`;
+const csUrl = `${homeUrl}cs/`;
+---
+
+<header class="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-lg">
+  <div class="mx-auto flex min-h-16 w-full max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
+    <a class="group flex items-center gap-2.5 font-semibold tracking-tight" href={homeUrl} aria-label="Algo Roadmap 홈">
+      <span class="grid size-9 place-items-center rounded-xl bg-primary text-sm font-bold text-primary-foreground shadow-sm transition-transform group-hover:-rotate-3">AR</span>
+      <span class="hidden sm:inline">Algo Roadmap</span>
+    </a>
+
+    <div class="flex min-w-0 items-center gap-2 sm:gap-4">
+      <nav class="flex items-center gap-1 overflow-x-auto text-sm" aria-label="주요 메뉴">
+        <a
+          class:list={["rounded-md px-3 py-2 whitespace-nowrap transition-colors hover:bg-muted", page === "home" && "bg-muted font-medium"]}
+          href={topicsUrl}
+          aria-current={page === "home" ? "page" : undefined}
+        >알고리즘</a>
+        <a
+          class:list={["rounded-md px-3 py-2 whitespace-nowrap transition-colors hover:bg-muted", page === "cs" && "bg-muted font-medium"]}
+          href={csUrl}
+          aria-current={page === "cs" ? "page" : undefined}
+        >CS 기본기</a>
+        <a class="hidden rounded-md px-3 py-2 whitespace-nowrap transition-colors hover:bg-muted md:block" href={page === "cs" ? "#study-plan" : routeUrl}>
+          {page === "cs" ? "9주 학습법" : "추천 순서"}
+        </a>
+      </nav>
+      <ThemeToggle ariaLabel="라이트·다크 테마 전환" size="sm" />
+    </div>
+  </div>
+</header>

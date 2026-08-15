@@ -1,0 +1,46 @@
+---
+import { ThemeInitScript } from "@starwind-ui/astro/theme";
+import "../styles/starwind.css";
+import "../styles/app.css";
+
+interface Props {
+  title: string;
+  description: string;
+  skipHref: string;
+  skipLabel: string;
+  bodyClass?: string;
+}
+
+const { title, description, skipHref, skipLabel, bodyClass = "" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        if (localStorage.getItem("colorTheme")) return;
+        const legacyTheme = localStorage.getItem("algo-roadmap-mode")
+          ?? localStorage.getItem("algo-roadmap-theme");
+        if (legacyTheme === "light" || legacyTheme === "dark") {
+          localStorage.setItem("colorTheme", legacyTheme);
+        }
+      })();
+    </script>
+    <ThemeInitScript defaultTheme="system" />
+    <slot name="head" />
+  </head>
+  <body class:list={["min-h-screen bg-background text-foreground antialiased", bodyClass]}>
+    <a
+      class="fixed top-3 left-3 z-50 -translate-y-24 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background shadow-lg transition-transform focus:translate-y-0"
+      href={skipHref}
+    >
+      {skipLabel}
+    </a>
+    <slot />
+  </body>
+</html>

@@ -1,7 +1,7 @@
 # Algo Roadmap
 
 대표적인 코딩 테스트 문제 유형을 빠르게 훑고, 풀이 패턴과 LeetCode 연습
-문제를 확인하는 Astro 기반 정적 학습 사이트입니다.
+문제를 확인하는 Astro와 Starwind UI 기반 정적 학습 사이트입니다.
 
 ## 특징
 
@@ -15,6 +15,7 @@
 - 연습 문제는 기본 패턴의 직접 적용과 상태 확장·단조 스택 같은 변형을 구분합니다.
 - AI 시대의 CS 기본기 18개 개념과 9주 학습 경로를 제공합니다.
 - 외부 문제 본문을 복제하지 않고 LeetCode 공식 링크만 제공합니다.
+- Starwind UI 컴포넌트와 Tailwind CSS v4 기반 라이트·다크 테마를 제공합니다.
 
 ## 로컬 실행
 
@@ -52,10 +53,12 @@ algo-roadmap/
 ├── src/
 │   ├── components/      # Astro UI 컴포넌트
 │   ├── data/            # 알고리즘 설명, 대표 문제와 시각화 단계
+│   ├── layouts/         # 공통 문서·테마 레이아웃
 │   ├── pages/           # Astro 페이지
 │   ├── scripts/         # 브라우저 TypeScript
-│   └── styles.css
+│   └── styles/          # Starwind 토큰과 도메인 전용 스타일
 ├── astro.config.mjs     # 빌드 및 GitHub Pages 기본 경로
+├── starwind.config.json # Starwind 레지스트리와 설치 컴포넌트
 ├── tsconfig.json        # 엄격한 TypeScript 설정
 ├── dist/                # 로컬 빌드 결과, Git 미추적
 ├── PLAN.md

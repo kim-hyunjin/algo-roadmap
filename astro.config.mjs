@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
@@ -5,5 +6,8 @@ export default defineConfig({
   base: "/algo-roadmap",
   build: {
     assets: "assets",
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });

@@ -19,8 +19,7 @@ function requireElement<T extends Element>(selector: string, parent: ParentNode)
 }
 
 function initializeCodeTabs(scope: HTMLElement): void {
-  const tabs = Array.from(scope.querySelectorAll<HTMLButtonElement>(".code-tab"));
-  const codeBlocks = Array.from(scope.querySelectorAll<HTMLElement>("[data-code-language]"));
+  const codeBlocks = Array.from(scope.querySelectorAll<HTMLElement>("[data-code-fallback]"));
   const editorHost = requireElement<HTMLElement>("[data-code-editor]", scope);
   const copyButton = requireElement<HTMLButtonElement>("[data-copy-code]", scope);
   const copyLabel = requireElement<HTMLElement>("span", copyButton);
@@ -33,14 +32,14 @@ function initializeCodeTabs(scope: HTMLElement): void {
   const models = new Map<string, monaco.editor.ITextModel>();
 
   for (const block of codeBlocks) {
-    const language = block.dataset.codeLanguage;
+    const language = block.getAttribute("data-value");
     if (!language) continue;
 
     const value = block.textContent ?? "";
     models.set(language, monaco.editor.createModel(value, language));
   }
 
-  const initialLanguage = tabs[0]?.dataset.language ?? "python";
+  const initialLanguage = scope.getAttribute("data-value") ?? "python";
   const initialModel = models.get(initialLanguage);
   const compactEditorMedia = window.matchMedia("(max-width: 699px)");
 
@@ -99,32 +98,12 @@ function initializeCodeTabs(scope: HTMLElement): void {
     updateEditorHeight(model);
     editorHost.setAttribute("aria-label", `${languageLabels[language] ?? language} 풀이 코드`);
 
-    for (const item of tabs) {
-      const isActive = item.dataset.language === language;
-      item.classList.toggle("active", isActive);
-      item.setAttribute("aria-selected", String(isActive));
-      item.tabIndex = isActive ? 0 : -1;
-    }
-
-    for (const block of codeBlocks) {
-      block.hidden = block.dataset.codeLanguage !== language;
-    }
   };
 
-  for (const [index, tab] of tabs.entries()) {
-    tab.addEventListener("click", () => {
-      if (tab.dataset.language) selectLanguage(tab.dataset.language);
-    });
-
-    tab.addEventListener("keydown", (event) => {
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      event.preventDefault();
-      const direction = event.key === "ArrowRight" ? 1 : -1;
-      const nextTab = tabs[(index + direction + tabs.length) % tabs.length];
-      nextTab.focus();
-      if (nextTab.dataset.language) selectLanguage(nextTab.dataset.language);
-    });
-  }
+  scope.addEventListener("starwind:value-change", (event) => {
+    const value = (event as CustomEvent<{ value: string | null }>).detail.value;
+    if (value) selectLanguage(value);
+  });
 
   copyButton.addEventListener("click", async () => {
     const code = editor.getModel()?.getValue() ?? "";
@@ -142,6 +121,7 @@ function initializeCodeTabs(scope: HTMLElement): void {
   });
 
   updateEditorHeight(initialModel);
+  selectLanguage(initialLanguage);
 
   window.addEventListener(
     "pagehide",
