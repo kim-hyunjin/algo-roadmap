@@ -1,10 +1,10 @@
 ---
 import { Badge } from "@/components/starwind/badge";
-import SiteFooter from "../../components/SiteFooter.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
-import TopicDetail from "../../components/TopicDetail.astro";
-import { topics, type Topic } from "../../data/topics";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import TopicDetail from "@/components/TopicDetail.astro";
+import { topics, type Topic } from "@/data/topics";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 
 export function getStaticPaths() {
   return topics.map((topic, index) => ({
