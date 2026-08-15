@@ -1,0 +1,20 @@
+---
+interface Props {
+  message: string;
+  linkHref: string;
+  linkLabel: string;
+  note?: string;
+}
+
+const { message, linkHref, linkLabel, note } = Astro.props;
+---
+
+<footer class="mt-24 border-t border-border">
+  <div class="mx-auto flex w-full max-w-7xl flex-col gap-3 px-5 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
+    <div>
+      <p class="font-medium text-foreground">{message}</p>
+      {note && <small>{note}</small>}
+    </div>
+    <a class="font-medium text-primary hover:text-primary-accent hover:underline" href={linkHref}>{linkLabel}</a>
+  </div>
+</footer>

@@ -1,198 +1,133 @@
 ---
+import Search from "@tabler/icons/outline/search.svg";
+import { Button } from "@/components/starwind/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/starwind/card";
+import { Input } from "@/components/starwind/input";
+import { Progress } from "@/components/starwind/progress";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import TopicCard from "../components/TopicCard.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
 import { topics } from "../data/topics";
-import "../styles.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const baseUrl = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
 const csUrl = `${baseUrl}cs/`;
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="대표 코딩 테스트 유형의 판별법, 풀이 패턴, 코드 템플릿과 연습 문제를 한곳에서 학습하세요."
-    />
-    <title>Algo Roadmap — 코딩 테스트 유형 가이드</title>
-    <script is:inline>
-      (() => {
-        const styles = ["retro", "original", "mono"];
-        const savedStyle = localStorage.getItem("algo-roadmap-style");
-        const savedMode = localStorage.getItem("algo-roadmap-mode") ?? localStorage.getItem("algo-roadmap-theme");
-        document.documentElement.dataset.style = styles.includes(savedStyle) ? savedStyle : "retro";
-        document.documentElement.dataset.theme = savedMode === "light" || savedMode === "dark"
-          ? savedMode
-          : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      })();
-    </script>
-  </head>
-  <body>
-    <a class="skip-link" href="#topics">학습 목록으로 건너뛰기</a>
+<BaseLayout
+  title="Algo Roadmap — 코딩 테스트 유형 가이드"
+  description="대표 코딩 테스트 유형의 판별법, 풀이 패턴, 코드 템플릿과 연습 문제를 한곳에서 학습하세요."
+  skipHref="#topics"
+  skipLabel="학습 목록으로 건너뛰기"
+>
+  <SiteHeader page="home" />
 
-    <header class="site-header">
-      <a class="brand" href="./" aria-label="Algo Roadmap 홈">
-        <span class="brand-mark" aria-hidden="true">A</span>
-        <span>Algo Roadmap</span>
-      </a>
-      <div class="header-actions">
-        <nav aria-label="주요 메뉴">
-          <a href="#topics">유형 학습</a>
-          <a href="#study-route">추천 순서</a>
-          <a href={csUrl}>CS 기본기</a>
-        </nav>
-        <ThemeToggle />
+  <main>
+    <section class="content-shell grid gap-10 py-20 lg:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.7fr)] lg:items-center lg:py-28">
+      <div>
+        <p class="section-kicker">코딩 테스트를 위한 작은 지도</p>
+        <h1 class="mt-5 max-w-4xl text-4xl leading-tight font-bold tracking-tight text-balance sm:text-6xl">
+          문제를 읽고,<br /><span class="text-primary">풀이 패턴</span>을 떠올리는 힘
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+          대표 알고리즘 10가지를 신호 → 대표 문제 → 단계별 실행 → 연습 문제의 순서로 익혀보세요.
+          막연히 문제 수를 늘리는 대신, 왜 이 풀이를 선택하고 상태가 어떻게 변하는지 배우는 정적 학습 가이드입니다.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button as="a" href="#topics" variant="primary">첫 유형 시작하기</Button>
+          <Button as="a" href="#study-route" variant="outline">추천 순서 보기</Button>
+          <Button as="a" href={csUrl} variant="ghost">AI 시대 CS 기본기 →</Button>
+        </div>
       </div>
-    </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">코딩 테스트를 위한 작은 지도</p>
-          <h1>문제를 읽고,<br /><em>풀이 패턴</em>을 떠올리는 힘</h1>
-          <p class="hero-description">
-            대표 알고리즘 10가지를 신호 → 대표 문제 → 단계별 실행 → 연습 문제의
-            순서로 익혀보세요. 막연히 문제 수를 늘리는 대신, 왜 이 풀이를
-            선택하고 상태가 어떻게 변하는지 배우는 정적 학습 가이드입니다.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#topics">첫 유형 시작하기</a>
-            <a class="button secondary" href="#study-route">추천 순서 보기</a>
-            <a class="button secondary" href={csUrl}>AI 시대 CS 기본기 →</a>
-          </div>
+      <Card class="border-primary/20 bg-card/80 shadow-xl shadow-primary/5">
+        <CardHeader class="flex-row items-center justify-between">
+          <CardTitle class="text-lg">나의 학습 진도</CardTitle>
+          <strong id="progress-count" class="font-mono text-primary">0 / {topics.length}</strong>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <Progress id="progress-track" value={0} max={topics.length} variant="primary" label="완료한 유형" />
+          <p id="progress-message" class="text-sm leading-6 text-muted-foreground">가장 익숙한 유형부터 하나씩 시작해보세요.</p>
+          <Button id="reset-progress" type="button" variant="ghost" size="sm" class="px-0 text-muted-foreground">진도 초기화</Button>
+        </CardContent>
+      </Card>
+    </section>
+
+    <section class="border-y border-border bg-muted/45">
+      <div class="content-shell grid divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+        {[
+          ["01", "신호를 찾기", "입력 크기와 문제 표현에서 사용할 수 있는 알고리즘을 좁힙니다."],
+          ["02", "말로 먼저 풀기", "코드를 쓰기 전, 상태와 반복 규칙을 한 문장으로 설명합니다."],
+          ["03", "복잡도 확인", "정답 코드를 외우기보다 제한 안에 동작하는 이유를 확인합니다."],
+        ].map(([number, title, copy]) => (
+          <article class="py-8 md:px-8 first:md:pl-0 last:md:pr-0">
+            <span class="font-mono text-xs font-semibold text-primary">{number}</span>
+            <h2 class="mt-3 font-semibold">{title}</h2>
+            <p class="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="topics" class="content-shell scroll-mt-24 py-20">
+      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p class="section-kicker">Pattern library</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">대표 문제 유형</h2>
         </div>
+        <p class="max-w-xl leading-7 text-muted-foreground">유형을 선택해 대표 문제의 상세 풀이와 실행 과정을 따라가 보세요.</p>
+      </div>
 
-        <aside class="progress-card" aria-labelledby="progress-title">
-          <div class="progress-top">
-            <span id="progress-title">나의 학습 진도</span>
-            <strong id="progress-count">0 / {topics.length}</strong>
-          </div>
-          <div
-            class="progress-track"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuemax={topics.length}
-            aria-valuenow="0"
-            aria-label="완료한 유형"
-          >
-            <span id="progress-bar"></span>
-          </div>
-          <p id="progress-message">가장 익숙한 유형부터 하나씩 시작해보세요.</p>
-          <button id="reset-progress" class="text-button" type="button">
-            진도 초기화
-          </button>
-        </aside>
-      </section>
-
-      <section class="principles" aria-label="학습 원칙">
-        <article>
-          <span>01</span>
-          <h2>신호를 찾기</h2>
-          <p>입력 크기와 문제 표현에서 사용할 수 있는 알고리즘을 좁힙니다.</p>
-        </article>
-        <article>
-          <span>02</span>
-          <h2>말로 먼저 풀기</h2>
-          <p>코드를 쓰기 전, 상태와 반복 규칙을 한 문장으로 설명합니다.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <h2>복잡도 확인</h2>
-          <p>정답 코드를 외우기보다 제한 안에 동작하는 이유를 확인합니다.</p>
-        </article>
-      </section>
-
-      <section id="topics" class="topics-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Pattern library</p>
-            <h2>대표 문제 유형</h2>
-          </div>
-          <p>유형을 선택해 대표 문제의 상세 풀이와 실행 과정을 따라가 보세요.</p>
+      <div class="mt-10 flex flex-col gap-3 rounded-xl border border-border bg-card p-4 md:flex-row md:items-center md:justify-between">
+        <label class="relative block flex-1 md:max-w-xl">
+          <span class="sr-only">유형 검색</span>
+          <Search class="pointer-events-none absolute top-1/2 left-3.5 z-10 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+          <Input id="search-input" type="search" class="pl-10" placeholder="예: 그래프, 최단 거리, 연속 구간" autocomplete="off" />
+        </label>
+        <div class="flex gap-2" aria-label="난이도 필터">
+          <Button type="button" variant="outline" size="sm" data-level-filter data-level="all" data-active="true" class="data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground">전체</Button>
+          <Button type="button" variant="outline" size="sm" data-level-filter data-level="basic" data-active="false" class="data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground">기초</Button>
+          <Button type="button" variant="outline" size="sm" data-level-filter data-level="intermediate" data-active="false" class="data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground">중급</Button>
         </div>
+      </div>
 
-        <div class="tools" role="search">
-          <label class="search-box">
-            <span class="visually-hidden">유형 검색</span>
-            <span aria-hidden="true">⌕</span>
-            <input
-              id="search-input"
-              type="search"
-              placeholder="예: 그래프, 최단 거리, 연속 구간"
-              autocomplete="off"
-            />
-          </label>
-          <div class="filters" aria-label="난이도 필터">
-            <button class="filter active" type="button" data-level="all">전체</button>
-            <button class="filter" type="button" data-level="basic">기초</button>
-            <button class="filter" type="button" data-level="intermediate">중급</button>
-          </div>
-        </div>
-
-        <p id="result-summary" class="result-summary" aria-live="polite"></p>
-        <div id="topic-grid" class="topic-grid">
-          {topics.map((topic, index) => <TopicCard {topic} {index} />)}
-        </div>
-        <div id="empty-state" class="empty-state" hidden>
+      <p id="result-summary" class="mt-5 text-sm text-muted-foreground" aria-live="polite"></p>
+      <div id="topic-grid" class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {topics.map((topic, index) => <TopicCard {topic} {index} />)}
+      </div>
+      <Card id="empty-state" class="mt-5 text-center" hidden>
+        <CardContent class="py-12">
           <strong>찾는 유형이 없습니다.</strong>
-          <p>검색어를 줄이거나 난이도 필터를 바꿔보세요.</p>
-        </div>
-      </section>
+          <p class="mt-2 text-sm text-muted-foreground">검색어를 줄이거나 난이도 필터를 바꿔보세요.</p>
+        </CardContent>
+      </Card>
+    </section>
 
-      <section id="study-route" class="route-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">4-week route</p>
-            <h2>처음이라면 이 순서로</h2>
-          </div>
-          <p>주 5일, 하루 60~90분 기준입니다. 매주 마지막 학습일에는 새 유형 대신 오답과 이전 유형을 다시 봅니다.</p>
+    <section id="study-route" class="scroll-mt-24 border-y border-border bg-muted/40 py-20">
+      <div class="content-shell">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div><p class="section-kicker">4-week route</p><h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">처음이라면 이 순서로</h2></div>
+          <p class="max-w-xl leading-7 text-muted-foreground">주 5일, 하루 60~90분 기준입니다. 매주 마지막 학습일에는 새 유형 대신 오답과 이전 유형을 다시 봅니다.</p>
         </div>
-
-        <ol class="route-list">
-          <li>
-            <span class="week">1주차</span>
-            <div>
-              <h3>기본 도구 익히기</h3>
-              <p>배열·해시 → 스택·큐 → 완전 탐색</p>
-              <small>완료 기준: 각 유형의 적용 조건을 설명하고 직접 적용 문제를 2개씩 풉니다.</small>
-            </div>
-          </li>
-          <li>
-            <span class="week">2주차</span>
-            <div>
-              <h3>탐색 범위 줄이기</h3>
-              <p>정렬·그리디 → 이분 탐색 → 투 포인터</p>
-              <small>완료 기준: 각 기법이 실패하는 반례를 하나씩 만들고 직접 적용 문제를 풉니다.</small>
-            </div>
-          </li>
-          <li>
-            <span class="week">3주차</span>
-            <div>
-              <h3>상태와 관계 탐색하기</h3>
-              <p>DFS·BFS → 동적 계획법</p>
-              <small>완료 기준: 방문 상태와 DP 상태를 문장으로 정의하고 대표 코드를 빈 화면에서 다시 씁니다.</small>
-            </div>
-          </li>
-          <li>
-            <span class="week">4주차</span>
-            <div>
-              <h3>그래프 문제 확장하기</h3>
-              <p>최단 경로 → 유니온 파인드·MST → 약점 복습</p>
-              <small>완료 기준: 가중치·연결성 조건을 구분하고 누적 오답 중 3문제를 다시 해결합니다.</small>
-            </div>
-          </li>
+        <ol class="mt-10 grid gap-4 lg:grid-cols-2">
+          {[
+            ["1주차", "기본 도구 익히기", "배열·해시 → 스택·큐 → 완전 탐색", "각 유형의 적용 조건을 설명하고 직접 적용 문제를 2개씩 풉니다."],
+            ["2주차", "탐색 범위 줄이기", "정렬·그리디 → 이분 탐색 → 투 포인터", "각 기법이 실패하는 반례를 하나씩 만들고 직접 적용 문제를 풉니다."],
+            ["3주차", "상태와 관계 탐색하기", "DFS·BFS → 동적 계획법", "방문 상태와 DP 상태를 문장으로 정의하고 대표 코드를 빈 화면에서 다시 씁니다."],
+            ["4주차", "그래프 문제 확장하기", "최단 경로 → 유니온 파인드·MST → 약점 복습", "가중치·연결성 조건을 구분하고 누적 오답 중 3문제를 다시 해결합니다."],
+          ].map(([week, title, path, done]) => (
+            <li class="rounded-xl border border-border bg-card p-6">
+              <span class="text-xs font-semibold text-primary">{week}</span>
+              <h3 class="mt-2 text-lg font-semibold">{title}</h3>
+              <p class="mt-2 text-sm">{path}</p>
+              <small class="mt-4 block leading-6 text-muted-foreground">완료 기준: {done}</small>
+            </li>
+          ))}
         </ol>
-      </section>
-    </main>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-      <p>정답을 외우는 대신, 선택의 근거를 익히세요.</p>
-      <a href="#topics">위로 돌아가기 ↑</a>
-    </footer>
-
-    <script src="../scripts/app.ts"></script>
-  </body>
-</html>
+  <SiteFooter message="정답을 외우는 대신, 선택의 근거를 익히세요." linkHref="#topics" linkLabel="위로 돌아가기 ↑" />
+  <script src="../scripts/app.ts"></script>
+</BaseLayout>

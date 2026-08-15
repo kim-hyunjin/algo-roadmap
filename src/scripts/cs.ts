@@ -1,10 +1,8 @@
-const storageKey = "algo-roadmap-cs-completed";
+type CheckboxChangeDetail = { checked: boolean };
 
-const checkboxes = Array.from(
-  document.querySelectorAll<HTMLInputElement>("[data-cs-check]"),
-);
+const storageKey = "algo-roadmap-cs-completed";
+const checkboxRoots = Array.from(document.querySelectorAll<HTMLElement>("[data-cs-check]"));
 const progressCount = document.querySelector<HTMLElement>("#cs-progress-count");
-const progressBar = document.querySelector<HTMLElement>("#cs-progress-bar");
 const progressTrack = document.querySelector<HTMLElement>("#cs-progress-track");
 const progressCopy = document.querySelector<HTMLElement>("#cs-progress-copy");
 const resetButton = document.querySelector<HTMLButtonElement>("#cs-reset");
@@ -12,36 +10,50 @@ const resetButton = document.querySelector<HTMLButtonElement>("#cs-reset");
 function readCompleted(): Set<string> {
   try {
     const parsed: unknown = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
-    return new Set(
-      Array.isArray(parsed)
-        ? parsed.filter((value): value is string => typeof value === "string")
-        : [],
-    );
+    return new Set(Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : []);
   } catch {
     return new Set();
   }
 }
 
 let completed = readCompleted();
-const validIds = new Set(checkboxes.map((item) => item.dataset.csCheck).filter(Boolean));
+const validIds = new Set(checkboxRoots.map((item) => item.dataset.csCheck).filter(Boolean));
 completed = new Set([...completed].filter((id) => validIds.has(id)));
 
 function save(): void {
   try {
     localStorage.setItem(storageKey, JSON.stringify([...completed]));
   } catch {
-    // 로컬 저장소가 막혀도 현재 화면의 진행 표시는 유지합니다.
+    // 저장소가 차단되어도 현재 세션의 진행 표시는 유지합니다.
   }
 }
 
-function render(): void {
-  const total = checkboxes.length;
-  const count = completed.size;
-  const percent = total === 0 ? 0 : Math.round((count / total) * 100);
+function setCheckboxState(root: HTMLElement, checked: boolean): void {
+  const input = root.querySelector<HTMLInputElement>("[data-sw-checkbox-input]");
+  if (!input || (input.checked === checked && root.getAttribute("aria-checked") === String(checked))) return;
+  input.checked = checked;
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+}
 
+function updateConceptState(root: HTMLElement, checked: boolean): void {
+  const concept = root.closest<HTMLElement>("[data-cs-concept]");
+  if (concept) concept.dataset.completed = String(checked);
+}
+
+function updateProgressElement(value: number, total: number): void {
+  if (!progressTrack) return;
+  const percent = total === 0 ? 0 : (value / total) * 100;
+  progressTrack.dataset.value = String(value);
+  progressTrack.setAttribute("aria-valuenow", String(value));
+  const indicator = progressTrack.querySelector<HTMLElement>('[data-slot="progress-indicator"]');
+  if (indicator) indicator.style.transform = `translateX(-${100 - percent}%)`;
+}
+
+function render(): void {
+  const total = checkboxRoots.length;
+  const count = completed.size;
   if (progressCount) progressCount.textContent = `${count} / ${total}`;
-  if (progressBar) progressBar.style.width = `${percent}%`;
-  if (progressTrack) progressTrack.setAttribute("aria-valuenow", String(count));
+  updateProgressElement(count, total);
   if (progressCopy) {
     progressCopy.textContent =
       count === total
@@ -54,17 +66,18 @@ function render(): void {
   }
 }
 
-for (const checkbox of checkboxes) {
-  const id = checkbox.dataset.csCheck;
+for (const root of checkboxRoots) {
+  const id = root.dataset.csCheck;
   if (!id) continue;
+  const initialChecked = completed.has(id);
+  setCheckboxState(root, initialChecked);
+  updateConceptState(root, initialChecked);
 
-  checkbox.checked = completed.has(id);
-  checkbox.closest(".cs-concept")?.classList.toggle("is-complete", checkbox.checked);
-
-  checkbox.addEventListener("change", () => {
-    if (checkbox.checked) completed.add(id);
+  root.addEventListener("starwind:checked-change", (event) => {
+    const checked = (event as CustomEvent<CheckboxChangeDetail>).detail.checked;
+    if (checked) completed.add(id);
     else completed.delete(id);
-    checkbox.closest(".cs-concept")?.classList.toggle("is-complete", checkbox.checked);
+    updateConceptState(root, checked);
     save();
     render();
   });
@@ -73,11 +86,11 @@ for (const checkbox of checkboxes) {
 resetButton?.addEventListener("click", () => {
   if (completed.size === 0 || !window.confirm("CS 학습 진도를 모두 초기화할까요?")) return;
   completed.clear();
-  save();
-  for (const checkbox of checkboxes) {
-    checkbox.checked = false;
-    checkbox.closest(".cs-concept")?.classList.remove("is-complete");
+  for (const root of checkboxRoots) {
+    setCheckboxState(root, false);
+    updateConceptState(root, false);
   }
+  save();
   render();
 });
 

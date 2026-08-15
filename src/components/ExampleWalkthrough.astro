@@ -1,4 +1,9 @@
 ---
+import Copy from "@tabler/icons/outline/copy.svg";
+import { Badge } from "@/components/starwind/badge";
+import { Button } from "@/components/starwind/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/starwind/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/starwind/tabs";
 import type { RepresentativeExample, VisualCell } from "../data/examples";
 
 interface Props {
@@ -11,70 +16,59 @@ const getState = (cell: VisualCell) =>
   typeof cell === "string" ? "normal" : (cell.state ?? "normal");
 ---
 
-<section class="example-walkthrough" aria-label={`${example.title} 대표 문제 풀이`}>
-  <div class="example-heading">
-    <span>대표 문제</span>
-    <h4>{example.title}</h4>
-    <p>{example.prompt}</p>
-  </div>
+<section class="grid gap-6" aria-label={`${example.title} 대표 문제 풀이`}>
+  <Card class="overflow-hidden border-primary/30">
+    <CardHeader class="border-b border-border bg-primary/5">
+      <Badge variant="primary" class="w-fit">대표 문제</Badge>
+      <CardTitle class="mt-3 text-2xl">{example.title}</CardTitle>
+      <p class="leading-7 text-muted-foreground">{example.prompt}</p>
+    </CardHeader>
+    <CardContent class="pt-6">
+      <dl class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">입력</dt><dd class="mt-2"><code>{example.input}</code></dd></div>
+        <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">출력</dt><dd class="mt-2"><code>{example.output}</code></dd></div>
+        <div class="rounded-lg bg-muted p-4 lg:col-span-1"><dt class="text-xs font-semibold text-muted-foreground">입력 조건</dt><dd class="mt-2 text-sm">{example.inputContract}</dd></div>
+        <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">시간 복잡도</dt><dd class="mt-2"><code>{example.timeComplexity}</code></dd></div>
+        <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">공간 복잡도</dt><dd class="mt-2"><code>{example.spaceComplexity}</code></dd></div>
+      </dl>
+    </CardContent>
+  </Card>
 
-  <dl class="example-io">
-    <div>
-      <dt>입력</dt>
-      <dd><code>{example.input}</code></dd>
-    </div>
-    <div>
-      <dt>출력</dt>
-      <dd><code>{example.output}</code></dd>
-    </div>
-    <div class="example-contract">
-      <dt>입력 조건</dt>
-      <dd>{example.inputContract}</dd>
-    </div>
-    <div>
-      <dt>시간 복잡도</dt>
-      <dd><code>{example.timeComplexity}</code></dd>
-    </div>
-    <div>
-      <dt>공간 복잡도</dt>
-      <dd><code>{example.spaceComplexity}</code></dd>
-    </div>
-  </dl>
+  <Card class="border-info/60 bg-info/5">
+    <CardHeader><CardTitle class="text-lg">핵심 생각</CardTitle></CardHeader>
+    <CardContent><p class="leading-7">{example.keyIdea}</p></CardContent>
+  </Card>
 
-  <div class="example-key-idea">
-    <h5>핵심 생각</h5>
-    <p>{example.keyIdea}</p>
-  </div>
-
-  <ol class="reasoning-list">
-    {example.reasoning.map((step) => (
-      <li>
-        <strong>{step.title}</strong>
-        <p>{step.description}</p>
+  <ol class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    {example.reasoning.map((step, index) => (
+      <li class="rounded-xl border border-border bg-card p-5">
+        <span class="font-mono text-xs font-semibold text-primary">STEP {String(index + 1).padStart(2, "0")}</span>
+        <strong class="mt-2 block">{step.title}</strong>
+        <p class="mt-2 text-sm leading-6 text-muted-foreground">{step.description}</p>
       </li>
     ))}
   </ol>
 
   <div class="algorithm-visual" data-walkthrough>
-    <div class="visual-heading">
+    <div class="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h5>알고리즘 실행 과정</h5>
-        <span aria-live="polite">
+        <h3 class="font-semibold">알고리즘 실행 과정</h3>
+        <span class="text-sm text-muted-foreground" aria-live="polite">
           <b data-step-current>1</b> / <span data-step-total>{example.frames.length}</span>
         </span>
       </div>
-      <div class="visual-controls">
-        <button type="button" data-step-previous disabled>이전</button>
-        <button type="button" data-step-next>다음</button>
+      <div class="flex gap-2">
+        <Button type="button" variant="outline" size="sm" data-step-previous disabled>이전</Button>
+        <Button type="button" variant="primary" size="sm" data-step-next>다음</Button>
       </div>
     </div>
 
-    <div class="visual-frames" role="group" aria-label={example.visualizationLabel}>
+    <div role="group" aria-label={example.visualizationLabel}>
       {example.frames.map((frame, frameIndex) => (
-        <section class="visual-frame" data-visual-frame hidden={frameIndex !== 0}>
-          <div class="visual-copy">
+        <section data-visual-frame hidden={frameIndex !== 0}>
+          <div class="border-b border-border px-5 py-4">
             <strong>{frame.title}</strong>
-            <p>{frame.description}</p>
+            <p class="mt-1 text-sm text-muted-foreground">{frame.description}</p>
           </div>
           <div class="visual-board" role="img" aria-label={`${frame.title}. ${frame.description}`}>
             {frame.rows.map((row) => (
@@ -93,59 +87,32 @@ const getState = (cell: VisualCell) =>
     </div>
   </div>
 
-  <div class="detail-block example-code" data-code-tabs>
-    <div class="code-heading">
-      <div>
-        <h5>이 문제의 전체 코드</h5>
-        <p>언어를 바꿔가며 풀이를 비교해 보세요.</p>
-      </div>
-      <button class="code-copy" type="button" data-copy-code aria-label="현재 풀이 코드 복사">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="8" y="8" width="11" height="11" rx="2"></rect>
-          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-        </svg>
-        <span>코드 복사</span>
-      </button>
-    </div>
-    <div class="code-editor-shell">
-      <div class="code-tabs" role="tablist" aria-label={`${example.title} 풀이 언어`}>
-        <button
-          class="code-tab active"
-          type="button"
-          role="tab"
-          aria-selected="true"
-          tabindex="0"
-          data-language="python"
-        >Python</button>
-        <button
-          class="code-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-          data-language="javascript"
-        >JavaScript</button>
-        <button
-          class="code-tab"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-          data-language="cpp"
-        >C++</button>
-      </div>
-      <div
-        class="monaco-editor-host"
-        data-code-editor
-        role="region"
-        aria-label={`${example.title} Python 풀이 코드`}
-      ></div>
-      <div class="code-fallback" data-code-fallback>
-        <pre data-code-language="python"><code>{example.python}</code></pre>
-        <pre data-code-language="javascript" hidden><code>{example.javascript}</code></pre>
-        <pre data-code-language="cpp" hidden><code>{example.cpp}</code></pre>
-      </div>
-    </div>
-    <p class="code-copy-status visually-hidden" data-copy-status aria-live="polite"></p>
-  </div>
+  <Card>
+    <Tabs defaultValue="python" data-code-tabs>
+      <CardHeader class="flex-row items-start justify-between gap-4">
+        <div>
+          <CardTitle>이 문제의 전체 코드</CardTitle>
+          <p class="mt-1 text-sm text-muted-foreground">언어를 바꿔가며 풀이를 비교해 보세요.</p>
+        </div>
+        <Button type="button" variant="outline" size="sm" data-copy-code aria-label="현재 풀이 코드 복사">
+          <Copy class="size-4" aria-hidden="true" />
+          <span>코드 복사</span>
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <TabsList class="mb-3 w-full justify-start overflow-x-auto" aria-label={`${example.title} 풀이 언어`}>
+          <TabsTrigger value="python">Python</TabsTrigger>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          <TabsTrigger value="cpp">C++</TabsTrigger>
+        </TabsList>
+        <div class="code-editor-shell">
+          <div class="monaco-editor-host" data-code-editor role="region" aria-label={`${example.title} Python 풀이 코드`}></div>
+          <TabsContent value="python" data-code-fallback><pre>{example.python}</pre></TabsContent>
+          <TabsContent value="javascript" data-code-fallback><pre>{example.javascript}</pre></TabsContent>
+          <TabsContent value="cpp" data-code-fallback><pre>{example.cpp}</pre></TabsContent>
+        </div>
+        <p class="sr-only" data-copy-status aria-live="polite"></p>
+      </CardContent>
+    </Tabs>
+  </Card>
 </section>
