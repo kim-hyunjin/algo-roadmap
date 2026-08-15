@@ -20,14 +20,14 @@
 ## 로컬 실행
 
 ```bash
-npm install
-npm run check
-npm run build
-npm run dev
+pnpm install
+pnpm run check
+pnpm run build
+pnpm run dev
 ```
 
 개발 서버가 안내하는 `http://localhost:4321/algo-roadmap/`을 엽니다. 배포 결과를
-확인하려면 `npm run build` 후 `npm run preview`를 사용합니다.
+확인하려면 `pnpm run build` 후 `pnpm run preview`를 사용합니다.
 
 ## GitHub Pages 배포
 
@@ -35,7 +35,7 @@ npm run dev
 마친 뒤 `dist`의 결과물만 `gh-pages` 브랜치에 게시합니다.
 
 ```bash
-npm run deploy
+pnpm run deploy
 ```
 
 `deploy` 명령은 다음 작업을 순서대로 수행합니다.
