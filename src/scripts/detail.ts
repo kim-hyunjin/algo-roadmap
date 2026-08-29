@@ -119,6 +119,11 @@ function initializeWalkthrough(walkthrough: HTMLElement): void {
   const currentLabel = requireElement<HTMLElement>("[data-step-current]", walkthrough);
   let currentIndex = 0;
 
+  const setButtonDisabled = (button: HTMLButtonElement, isDisabled: boolean): void => {
+    button.disabled = isDisabled;
+    button.toggleAttribute("data-disabled", isDisabled);
+  };
+
   const showFrame = (nextIndex: number): void => {
     currentIndex = Math.max(0, Math.min(nextIndex, frames.length - 1));
 
@@ -127,8 +132,8 @@ function initializeWalkthrough(walkthrough: HTMLElement): void {
     }
 
     currentLabel.textContent = String(currentIndex + 1);
-    previousButton.disabled = currentIndex === 0;
-    nextButton.disabled = currentIndex === frames.length - 1;
+    setButtonDisabled(previousButton, currentIndex === 0);
+    setButtonDisabled(nextButton, currentIndex === frames.length - 1);
   };
 
   previousButton.addEventListener("click", () => showFrame(currentIndex - 1));
