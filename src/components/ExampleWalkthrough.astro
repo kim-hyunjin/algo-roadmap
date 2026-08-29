@@ -1,5 +1,4 @@
 ---
-import Copy from "@tabler/icons/outline/copy.svg";
 import { Badge } from "@/components/starwind/badge";
 import { Button } from "@/components/starwind/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/starwind/card";
@@ -18,12 +17,12 @@ const getState = (cell: VisualCell) =>
 
 <section class="grid gap-6" aria-label={`${example.title} 대표 문제 풀이`}>
   <Card class="overflow-hidden border-primary/30">
-    <CardHeader class="border-b border-border bg-primary/5">
+    <CardHeader class="border-b border-border pb-(--card-spacing)">
       <Badge variant="primary" class="w-fit">대표 문제</Badge>
       <CardTitle class="mt-3 text-2xl">{example.title}</CardTitle>
       <p class="leading-7 text-muted-foreground">{example.prompt}</p>
     </CardHeader>
-    <CardContent class="pt-6">
+    <CardContent >
       <dl class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">입력</dt><dd class="mt-2"><code>{example.input}</code></dd></div>
         <div class="rounded-lg bg-muted p-4"><dt class="text-xs font-semibold text-muted-foreground">출력</dt><dd class="mt-2"><code>{example.output}</code></dd></div>
@@ -106,15 +105,11 @@ const getState = (cell: VisualCell) =>
 
   <Card>
     <Tabs defaultValue="python" class="group/code-tabs" data-code-tabs data-monaco-ready="false">
-      <CardHeader class="flex-row items-start justify-between gap-4">
+      <CardHeader class="flex-row items-start justify-between gap-4 pb-(--card-spacing)">
         <div>
           <CardTitle>이 문제의 전체 코드</CardTitle>
           <p class="mt-1 text-sm text-muted-foreground">언어를 바꿔가며 풀이를 비교해 보세요.</p>
         </div>
-        <Button type="button" variant="outline" size="sm" data-copy-code aria-label="현재 풀이 코드 복사">
-          <Copy class="size-4" aria-hidden="true" />
-          <span>코드 복사</span>
-        </Button>
       </CardHeader>
       <CardContent>
         <TabsList class="mb-3 w-full justify-start overflow-x-auto" aria-label={`${example.title} 풀이 언어`}>

@@ -21,9 +21,6 @@ function requireElement<T extends Element>(selector: string, parent: ParentNode)
 function initializeCodeTabs(scope: HTMLElement): void {
   const codeBlocks = Array.from(scope.querySelectorAll<HTMLElement>("[data-code-fallback]"));
   const editorHost = requireElement<HTMLElement>("[data-code-editor]", scope);
-  const copyButton = requireElement<HTMLButtonElement>("[data-copy-code]", scope);
-  const copyLabel = requireElement<HTMLElement>("span", copyButton);
-  const copyStatus = requireElement<HTMLElement>("[data-copy-status]", scope);
   const languageLabels: Record<string, string> = {
     python: "Python",
     javascript: "JavaScript",
@@ -55,11 +52,7 @@ function initializeCodeTabs(scope: HTMLElement): void {
     fontSize: 13,
     lineHeight: 21,
     lineNumbersMinChars: 3,
-    minimap: {
-      enabled: !compactEditorMedia.matches,
-      scale: 0.8,
-      showSlider: "mouseover",
-    },
+    minimap: { enabled: false },
     padding: { top: 14, bottom: 14 },
     renderLineHighlight: "line",
     roundedSelection: false,
@@ -103,21 +96,6 @@ function initializeCodeTabs(scope: HTMLElement): void {
   scope.addEventListener("starwind:value-change", (event) => {
     const value = (event as CustomEvent<{ value: string | null }>).detail.value;
     if (value) selectLanguage(value);
-  });
-
-  copyButton.addEventListener("click", async () => {
-    const code = editor.getModel()?.getValue() ?? "";
-
-    try {
-      await navigator.clipboard.writeText(code);
-      copyLabel.textContent = "복사됨";
-      copyStatus.textContent = "현재 풀이 코드가 클립보드에 복사되었습니다.";
-      window.setTimeout(() => {
-        copyLabel.textContent = "코드 복사";
-      }, 1600);
-    } catch {
-      copyStatus.textContent = "코드를 복사하지 못했습니다. 코드 영역에서 직접 선택해 주세요.";
-    }
   });
 
   updateEditorHeight(initialModel);
